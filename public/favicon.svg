@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="invexa" x1="0" y1="64" x2="64" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#124a3b" />
+      <stop offset="0.5" stop-color="#1f7a63" />
+      <stop offset="1" stop-color="#3a9c7e" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#invexa)" />
+  <path d="M32 11 L54 35 H39 V53 H25 V35 H10 Z" fill="#f5f7fa" />
+  <path d="M32 11 L54 35 H39 V53 H32 Z" fill="#a9cfc2" />
+</svg>

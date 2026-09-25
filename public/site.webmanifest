@@ -1,0 +1,19 @@
+{
+  "name": "Skyward Invexa",
+  "short_name": "Skyward Invexa",
+  "description": "Multi-asset market access for Australian investors.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#081c2d",
+  "theme_color": "#081c2d",
+  "lang": "en-AU",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

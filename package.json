@@ -1,0 +1,36 @@
+{
+  "name": "skyward-invexa-au",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Marketing website for Skyward Invexa (skywardinvexa-au.com)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && node scripts/postbuild.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "smoke": "vite build --ssr scripts/smoke.tsx --outDir .smoke --logLevel warn && node .smoke/smoke.js",
+    "test:ui": "vite build --ssr scripts/interaction.tsx --outDir .smoke-ui --logLevel warn && node .smoke-ui/interaction.js",
+    "shots": "node scripts/shots.mjs",
+    "check:layout": "node scripts/check-overlap.mjs",
+    "check:meta": "node scripts/check-meta.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "jsdom": "^30.1.1",
+    "playwright-core": "^1.63.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0"
+  }
+}

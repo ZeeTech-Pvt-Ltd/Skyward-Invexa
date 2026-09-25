@@ -1,0 +1,210 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Skyward Invexa — design tokens
+
+   The four colours from the brief, used as given:
+
+     Navy Blue    #081C2D   headings and the dark hero band
+     Emerald      #1F7A63   every interactive element
+     Soft White   #F5F7FA   page background and hero text
+     Cool Gray    #9AA3A8   dividers, icons, decorative marks
+
+   One addition: --color-ink-400 (#67707A), the Cool Gray darkened just
+   enough to carry small text. #9AA3A8 reaches only 2.6:1 on Soft White,
+   which fails WCAG AA for text, so it is kept for the non-text roles it is
+   good at and text uses its darker sibling instead. Delete that one line and
+   point the text-ink-400 usages back at text-ink-500 to use the Cool Gray
+   exactly as specified everywhere.
+
+   Tailwind v4 reads this block and generates the matching utilities
+   (bg-ink-900, text-heading, bg-hero-bg, ...).
+   ------------------------------------------------------------------ */
+@theme {
+  /* Light surfaces. ink-950 is the page, ink-300 is body copy. */
+  --color-ink-950: #f5f7fa;
+  --color-ink-900: #eef2f6;
+  --color-ink-850: #ffffff;
+  --color-ink-800: #e7ecf1;
+  --color-ink-700: #dde3ea;
+  --color-ink-600: #c3ccd6;
+  /* Cool Gray, exactly as briefed. Non-text roles only. */
+  --color-ink-500: #9aa3a8;
+  /* Cool Gray darkened for small text — see the note at the top. */
+  --color-ink-400: #67707a;
+  /* Body copy. */
+  --color-ink-300: #2c3a42;
+
+  /* The one colour every heading uses on light surfaces. */
+  --color-heading: #081c2d;
+
+  /* Text placed on a brand-coloured fill. */
+  --color-on-brand: #ffffff;
+
+  /* Emerald — primary. brand-500 is the briefed emerald; the rest of the
+     ramp exists so buttons, accent text and borders each get a value that
+     passes contrast. */
+  --color-brand-100: #e6f2ee;
+  --color-brand-200: #c3e2d9;
+  --color-brand-300: #8cc9b7;
+  --color-brand-400: #3a9c7e;
+  --color-brand-500: #1f7a63;
+  --color-brand-600: #1a6853;
+  --color-brand-700: #124a3b;
+
+  /* Rust — risk and warning callouts. warn-300 is the dark-surface variant:
+     warn-400 only reaches 3.8:1 on navy, which fails AA for text. */
+  --color-warn-200: #f7e0da;
+  --color-warn-300: #e88060;
+  --color-warn-400: #c0563a;
+  --color-warn-600: #96412a;
+
+  /* Confirmation — the emerald family, not a second green. */
+  --color-mint-200: #d9ede6;
+  --color-mint-400: #2e8f73;
+  --color-mint-600: #1f7a63;
+
+  --color-danger-400: #c0392b;
+
+  /* The dark hero band, built from the briefed Navy. */
+  --color-hero-bg: #081c2d;
+  --color-hero-surface: #0d2841;
+  --color-hero-fg: #f5f7fa;
+  /* Lightened from #8FA6BC, which sat at 6.9:1 and read as washed out in the
+     footer and hero body copy. This is 8.6:1. */
+  --color-hero-muted: #a7b9cc;
+  --color-hero-border: #23486b;
+
+  --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink-950 font-sans text-ink-300 antialiased;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  /* Every heading on a light surface, one colour. Headings sitting on the dark
+     hero opt out explicitly with text-hero-fg. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-heading;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-500);
+    color: var(--color-on-brand);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      /* Without this, an infinite animation is retriggered every 0.01ms —
+         which burns CPU rather than settling. */
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* The market ticker scrolls by exactly one copy of its item list, so the two
+   copies in the track swap seamlessly and the loop has no visible join. */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@layer utilities {
+  /* Soft emerald wash for light bands (page heroes, CTA bands). */
+  .glow-brand {
+    background-image: radial-gradient(
+      70% 60% at 50% 0%,
+      color-mix(in oklab, var(--color-brand-400) 20%, transparent) 0%,
+      transparent 72%
+    );
+  }
+
+  /* Emerald bloom behind the dark hero. Centred well below the navbar: at the
+     top-right it sat directly under the nav links and washed them out. */
+  .glow-hero {
+    background-image: radial-gradient(
+      58% 52% at 76% 26%,
+      color-mix(in oklab, var(--color-brand-400) 40%, transparent) 0%,
+      transparent 72%
+    );
+  }
+
+  /* The angular emerald band from the brand's card design. Applied over navy
+     surfaces to echo the diagonal wedge without filling a large area. */
+  .wedge-accent {
+    background-image: linear-gradient(
+      118deg,
+      transparent 0%,
+      transparent 58%,
+      color-mix(in oklab, var(--color-brand-500) 26%, transparent) 58%,
+      color-mix(in oklab, var(--color-brand-500) 26%, transparent) 74%,
+      transparent 74%
+    );
+  }
+
+  /* Faint blueprint grid behind the hero, fading out towards the edges. */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, var(--color-hero-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-hero-border) 1px, transparent 1px);
+    background-size: 54px 54px;
+    -webkit-mask-image: radial-gradient(78% 62% at 50% 0%, #000 0%, transparent 76%);
+    mask-image: radial-gradient(78% 62% at 50% 0%, #000 0%, transparent 76%);
+  }
+
+  /* Card elevation, tinted navy so it reads as light rather than grey. */
+  .elevate {
+    box-shadow:
+      0 1px 2px rgb(8 28 45 / 0.06),
+      0 10px 28px -14px rgb(8 28 45 / 0.2);
+  }
+
+  .hairline {
+    border: 1px solid var(--color-ink-700);
+  }
+
+  .ticker-track {
+    animation: ticker-scroll 45s linear infinite;
+  }
+
+  /* Let a visitor stop the ticker to read a price. */
+  .ticker-track:hover {
+    animation-play-state: paused;
+  }
+}

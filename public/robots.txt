@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# /thank-you is intentionally NOT disallowed. A Disallow rule stops crawlers
+# fetching the page, so they never see its noindex tag and may still list the
+# URL from an external link. Letting them fetch it and read the tag is what
+# actually keeps it out of the index.
+
+Sitemap: https://skywardinvexa-au.com/sitemap.xml
