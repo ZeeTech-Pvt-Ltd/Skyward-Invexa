@@ -3,10 +3,14 @@ import { Icon } from '@/components/ui/Icon'
 import { Section } from '@/components/ui/Section'
 import { EnquiryForm } from '@/components/forms/EnquiryForm'
 
-const reassurance = [
-  'No account opening or inactivity fee',
+/** What an account includes, at no cost. */
+const included = [
+  'No account opening, monthly or inactivity fee',
   'Fund with a bank transfer in Australian dollars',
   'Two-factor authentication on from the first login',
+  'Withdrawal destinations locked to an allowlist you control',
+  'Statements and order history exportable as CSV or PDF',
+  'Support during AEST business hours, from a real person',
 ]
 
 /**
@@ -17,7 +21,7 @@ export function HomeSignUp() {
   return (
     <Section id="register" tone="raised" divided className="scroll-mt-24">
       <Container>
-        <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+        <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <div>
             <p className="font-display text-xs font-semibold tracking-[0.18em] text-brand-600 uppercase">
               Get started
@@ -30,22 +34,17 @@ export function HomeSignUp() {
               takes a few minutes, and there is no charge to open or hold an account.
             </p>
 
-            <ul className="mt-8 space-y-3">
-              {reassurance.map((item) => (
+            <h3 className="mt-9 font-display text-sm font-semibold text-heading">
+              What Your Account Includes
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {included.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-ink-300">
                   <Icon name="check" className="mt-0.5 size-4 shrink-0 text-mint-600" />
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
-
-            <p className="mt-8 flex items-start gap-2 text-xs leading-relaxed text-ink-400">
-              <Icon name="alert" className="mt-0.5 size-3.5 shrink-0 text-warn-600" />
-              <span>
-                Trading involves risk of loss. Nothing on this page is personal financial advice, and
-                no figure here is a projection of what you might earn.
-              </span>
-            </p>
           </div>
 
           <div className="hairline elevate rounded-card bg-ink-850 p-6 sm:p-8">

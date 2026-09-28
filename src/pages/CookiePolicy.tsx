@@ -7,7 +7,7 @@ import { Container } from '@/components/ui/Container'
 import { Prose, ProseList, ProseSection } from '@/components/ui/Prose'
 import { Section } from '@/components/ui/Section'
 import { Table, TBody, TD, TH, THead, TR } from '@/components/ui/Table'
-import { PageHero } from '@/components/sections/PageHero'
+import { DarkPageHero } from '@/components/sections/DarkPageHero'
 
 const LAST_UPDATED = 'September 2026'
 
@@ -21,7 +21,7 @@ export default function CookiePolicy() {
 
   return (
     <>
-      <PageHero
+      <DarkPageHero
         eyebrow={`Last updated ${LAST_UPDATED}`}
         title="Skyward Invexa Cookie Policy"
         lead={`What cookies are set when you visit ${site.domain}, what each category is for, and how to turn the optional ones off.`}
@@ -63,7 +63,7 @@ export default function CookiePolicy() {
         </Container>
       </Section>
 
-      <Section tone="raised" divided>
+      <Section tone="raised" divided size="tight">
         <Container>
           <Table caption="Cookie categories used on skywardinvexa-au.com">
             <THead>

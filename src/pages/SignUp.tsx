@@ -4,7 +4,7 @@ import { Callout } from '@/components/ui/Callout'
 import { Container } from '@/components/ui/Container'
 import { Icon } from '@/components/ui/Icon'
 import { Section } from '@/components/ui/Section'
-import { PageHero } from '@/components/sections/PageHero'
+import { DarkPageHero } from '@/components/sections/DarkPageHero'
 import { EnquiryForm } from '@/components/forms/EnquiryForm'
 
 const included = [
@@ -25,33 +25,35 @@ export default function SignUp() {
 
   return (
     <>
-      <PageHero
+      <DarkPageHero
         eyebrow="Sign up"
         title="Sign Up for a Skyward Invexa Account"
         lead="Submit your details to begin identity verification. Opening an account and holding one cost nothing, so you only pay when you trade."
+        aside={
+          <div className="rounded-2xl border border-hero-border bg-hero-surface p-6">
+            <p className="font-display text-xs font-semibold tracking-[0.16em] text-brand-300 uppercase">
+              What Your Account Includes
+            </p>
+            <ul className="mt-5 space-y-3">
+              {included.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm text-hero-muted">
+                  <Icon name="check" className="mt-0.5 size-4 shrink-0 text-brand-300" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        }
       />
 
       <Section>
         <Container>
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
-            <div>
-              <EnquiryForm className="mt-8" />
+            <div className="hairline elevate rounded-card bg-ink-900 p-6 sm:p-8">
+              <EnquiryForm />
             </div>
 
             <aside className="space-y-6">
-              <div className="hairline elevate rounded-card bg-ink-850 p-6">
-                <h2 className="font-display text-base font-semibold text-heading">
-                  What Your Account Includes
-                </h2>
-                <ul className="mt-5 space-y-3">
-                  {included.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-ink-300">
-                      <Icon name="check" className="mt-0.5 size-4 shrink-0 text-mint-600" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
 
               <Callout tone="warn" title="Before You Apply">
                 Only commit capital you can afford to lose. Nothing in the sign-up process assesses

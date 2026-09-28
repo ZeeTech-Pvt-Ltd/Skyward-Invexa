@@ -5,7 +5,7 @@ import { Callout } from '@/components/ui/Callout'
 import { Container } from '@/components/ui/Container'
 import { Prose, ProseList, ProseSection } from '@/components/ui/Prose'
 import { Section } from '@/components/ui/Section'
-import { PageHero } from '@/components/sections/PageHero'
+import { DarkPageHero } from '@/components/sections/DarkPageHero'
 
 const LAST_UPDATED = 'September 2026'
 
@@ -19,7 +19,7 @@ export default function Terms() {
 
   return (
     <>
-      <PageHero
+      <DarkPageHero
         eyebrow={`Last updated ${LAST_UPDATED}`}
         title="Skyward Invexa Terms of Use"
         lead={`The terms on which you may use ${site.domain} and the ${site.name} platform.`}

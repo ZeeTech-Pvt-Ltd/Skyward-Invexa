@@ -4,7 +4,7 @@ import { Callout } from '@/components/ui/Callout'
 import { Container } from '@/components/ui/Container'
 import { Prose, ProseList, ProseSection } from '@/components/ui/Prose'
 import { Section } from '@/components/ui/Section'
-import { PageHero } from '@/components/sections/PageHero'
+import { DarkPageHero } from '@/components/sections/DarkPageHero'
 
 const LAST_UPDATED = 'September 2026'
 
@@ -18,7 +18,7 @@ export default function Privacy() {
 
   return (
     <>
-      <PageHero
+      <DarkPageHero
         eyebrow={`Last updated ${LAST_UPDATED}`}
         title="Skyward Invexa Privacy Policy"
         lead={`How ${site.name} handles personal information collected through ${site.domain} and through your account.`}

@@ -23,3 +23,6 @@ pnpm-debug.log*
 Thumbs.db
 
 *.tsbuildinfo
+
+# Local design-review screenshots, not part of the site
+.review
