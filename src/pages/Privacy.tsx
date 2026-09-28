@@ -10,7 +10,7 @@ const LAST_UPDATED = 'September 2026'
 
 export default function Privacy() {
   usePageMeta({
-    title: 'Privacy Policy',
+    title: 'Privacy Policy | How Skyward Invexa Handles Your Data',
     description:
       'How Skyward Invexa collects, uses, stores and discloses personal information, and how to access or correct the information we hold about you.',
     path: '/privacy',

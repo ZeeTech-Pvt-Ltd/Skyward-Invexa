@@ -10,7 +10,7 @@ import { EnquiryForm } from '@/components/forms/EnquiryForm'
 
 export default function Contact() {
   usePageMeta({
-    title: 'Contact',
+    title: 'Contact Skyward Invexa | Support, Sales and Enquiries',
     description:
       'Contact Skyward Invexa for general enquiries, account support, compliance questions and media requests, with support hours in AEST.',
     path: '/contact',

@@ -17,9 +17,9 @@ const included = [
 
 export default function SignUp() {
   usePageMeta({
-    title: 'Sign Up',
+    title: 'Sign Up | Open a Skyward Invexa Trading Account Today',
     description:
-      'Open a Skyward Invexa account. Submit your details to begin identity verification and get access to digital assets, ASX-listed equities, FX and commodities.',
+      'Open a Skyward Invexa account. Submit your details to begin identity verification and get access to digital assets, ASX equities, FX and commodities.',
     path: '/sign-up',
   })
 

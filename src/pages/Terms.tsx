@@ -11,9 +11,9 @@ const LAST_UPDATED = 'September 2026'
 
 export default function Terms() {
   usePageMeta({
-    title: 'Terms of Use',
+    title: 'Terms of Use | The Skyward Invexa Client Agreement',
     description:
-      'The terms governing use of the Skyward Invexa website and platform, including eligibility, no-advice disclaimer, risk disclosure and limitation of liability.',
+      'The terms governing use of the Skyward Invexa website and platform: eligibility, no-advice disclaimer, risk disclosure and limitation of liability.',
     path: '/terms',
   })
 

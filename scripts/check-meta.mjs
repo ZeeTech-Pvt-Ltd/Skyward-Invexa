@@ -114,18 +114,23 @@ for (const [path, expectedRobots] of ROUTES) {
     problems.push('canonical is missing')
   }
 
-  // Google shows roughly 60 characters of a title and 160 of a description.
-  // Anything longer is truncated in the result, so treat it as a defect.
-  if (!meta.title || meta.title.length < 15) {
-    problems.push('title is missing or too short')
+  // Search results show roughly 50-60 characters of a title and 120-155 of a
+  // description. Below the range wastes the slot; above it is truncated. Both
+  // are what SEO auditors flag, so both are defects here.
+  if (!meta.title) {
+    problems.push('title is missing')
+  } else if (meta.title.length < (expectedRobots ? 10 : 50)) {
+    problems.push(`title is only ${meta.title.length} chars, under the 50 worth showing`)
   } else if (meta.title.length > 60) {
     problems.push(`title is ${meta.title.length} chars, over the 60 that show`)
   }
 
-  if (!meta.description || meta.description.length < 50) {
-    problems.push('description is missing or too short')
-  } else if (meta.description.length > 160) {
-    problems.push(`description is ${meta.description.length} chars, over the 160 that show`)
+  if (!meta.description) {
+    problems.push('description is missing')
+  } else if (meta.description.length < (expectedRobots ? 20 : 120)) {
+    problems.push(`description is only ${meta.description.length} chars, under the 120 worth showing`)
+  } else if (meta.description.length > 155) {
+    problems.push(`description is ${meta.description.length} chars, over the 155 that show`)
   }
 
   // The brand should appear once, not twice.

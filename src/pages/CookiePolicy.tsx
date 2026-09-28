@@ -13,7 +13,7 @@ const LAST_UPDATED = 'September 2026'
 
 export default function CookiePolicy() {
   usePageMeta({
-    title: 'Cookie Policy',
+    title: 'Cookie Policy | How Skyward Invexa Uses Cookies and Data',
     description:
       'How Skyward Invexa uses cookies and similar technologies, which categories are optional, and how to control them in your browser.',
     path: '/cookie-policy',

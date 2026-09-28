@@ -14,7 +14,7 @@ import { CtaBand } from '@/components/sections/CtaBand'
 
 export default function Faq() {
   usePageMeta({
-    title: 'Frequently asked questions',
+    title: 'Skyward Invexa FAQ | Accounts, Funding and Trading Risk',
     description:
       'What Skyward Invexa is, how onboarding, funding and withdrawals work, what the risks are, and the limits of what the platform will do on your behalf.',
     path: '/faq',

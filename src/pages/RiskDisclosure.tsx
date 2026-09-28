@@ -10,7 +10,7 @@ const LAST_UPDATED = 'September 2026'
 
 export default function RiskDisclosure() {
   usePageMeta({
-    title: 'Risk Disclosure',
+    title: 'Risk Disclosure | Understand Trading Risk at Skyward Invexa',
     description:
       'The Skyward Invexa risk disclosure statement: how leverage, volatility, gapping, liquidity and execution risk can affect your positions before you trade.',
     path: '/risk-disclosure',

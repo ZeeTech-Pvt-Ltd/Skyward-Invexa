@@ -13,7 +13,7 @@ import { CtaBand } from '@/components/sections/CtaBand'
 
 export default function About() {
   usePageMeta({
-    title: 'About',
+    title: 'About Skyward Invexa | Multi-Asset Trading for Australia',
     description:
       'Skyward Invexa builds multi-asset trading and execution software for Australian investors. Our principles, our structure and how we describe what we do.',
     path: '/about',
