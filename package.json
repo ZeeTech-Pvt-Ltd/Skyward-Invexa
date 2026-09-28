@@ -15,7 +15,9 @@
     "check:layout": "node scripts/check-overlap.mjs",
     "check:meta": "node scripts/check-meta.mjs",
     "sync:flags": "node scripts/sync-flags.mjs",
-    "check:flags": "node scripts/check-flags.mjs"
+    "check:flags": "node scripts/check-flags.mjs",
+    "make:og": "node scripts/make-og-image.mjs",
+    "audit": "node scripts/audit.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

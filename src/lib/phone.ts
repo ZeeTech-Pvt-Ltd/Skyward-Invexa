@@ -1,4 +1,4 @@
-import { COUNTRIES, dialCodeOf, dialForPrefix } from '@/data/countries'
+import { dialCodeOf, dialForPrefix } from '@/data/countries'
 
 /** Strip everything that is not a digit or a leading plus. */
 export function cleanPhone(value: string): string {
@@ -95,5 +95,3 @@ export function validatePhone(value: string): string {
   return ''
 }
 
-/** Number of countries the picker offers. */
-export const COUNTRY_COUNT = COUNTRIES.length

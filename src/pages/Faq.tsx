@@ -7,6 +7,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { DarkPageHero } from '@/components/sections/DarkPageHero'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { QuestionIndexPanel } from '@/components/charts/QuestionIndexPanel'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { CtaBand } from '@/components/sections/CtaBand'
@@ -21,6 +22,20 @@ export default function Faq() {
 
   return (
     <>
+      {/* FAQPage structured data, built from the questions the page renders. */}
+      <JsonLd
+        id="faq-schema"
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: { '@type': 'Answer', text: item.answer },
+          })),
+        }}
+      />
+
       <DarkPageHero
         eyebrow="FAQ"
         title="Skyward Invexa FAQ: Straight Answers, Including the Ones That Are Not Flattering"

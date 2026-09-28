@@ -8,7 +8,8 @@ import { Link } from 'react-router-dom'
 export default function NotFound() {
   usePageMeta({
     title: 'Page not found',
-    description: 'The page you were looking for could not be found.',
+    description:
+      'The page you were looking for could not be found. Browse the site navigation, or head back to the homepage to start again.',
     path: '/404',
     noindex: true,
   })

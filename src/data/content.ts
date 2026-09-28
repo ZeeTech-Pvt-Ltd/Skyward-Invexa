@@ -345,15 +345,6 @@ export const educationTopics = [
 /* Forms                                                               */
 /* ------------------------------------------------------------------ */
 
-/** Dial codes offered beside the phone field. Australia first. */
-export const dialCodes = [
-  { value: '+61', label: '+61 Australia', country: 'AU' },
-  { value: '+64', label: '+64 New Zealand', country: 'NZ' },
-  { value: '+44', label: '+44 United Kingdom', country: 'GB' },
-  { value: '+1', label: '+1 United States', country: 'US' },
-  { value: '+65', label: '+65 Singapore', country: 'SG' },
-] as const
-
 /* ------------------------------------------------------------------ */
 /* Cookie policy                                                       */
 /* ------------------------------------------------------------------ */

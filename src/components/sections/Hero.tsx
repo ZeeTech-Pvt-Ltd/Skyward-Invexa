@@ -56,11 +56,15 @@ export function Hero() {
           </div>
 
           <div className="relative lg:pl-6">
+            {/* Two encodes: 1x screens take the 138KB file, retina the larger
+                one. The dimensions reserve the box so nothing shifts. */}
             <img
               src="/img2.webp"
+              srcSet="/img2.webp 900w, /img2@2x.webp 1273w"
+              sizes="(min-width: 1024px) 42rem, (min-width: 640px) 34rem, calc(100vw - 2.5rem)"
               alt="A person holding a phone, with app panels floating around them."
-              width={1273}
-              height={1236}
+              width={900}
+              height={874}
               fetchPriority="high"
               decoding="async"
               className="mx-auto w-full max-w-[34rem] lg:mx-0 lg:ml-auto lg:max-w-[42rem]"

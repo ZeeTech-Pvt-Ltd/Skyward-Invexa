@@ -18,6 +18,13 @@ npm run dev        # http://localhost:5173
 | `npm run typecheck` | `tsc --noEmit` only |
 | `npm run smoke` | Render every route in Node and fail on any that throws |
 | `npm run test:ui` | Drive real DOM interactions in jsdom (accordion, form validation) |
+| `npm run check:meta` | Load every route in Chrome and assert title, description, canonical, robots, social card and JSON-LD |
+| `npm run check:flags` | Request every flag in the country picker and assert none is missing |
+| `npm run audit` | Report source files nothing imports and public assets nothing references |
+| `npm run shots` | Screenshot a route into `.shots/` for visual review |
+| `npm run check:layout` | Measure the panel-to-heading clearance at four viewport widths |
+| `npm run sync:flags` | Copy the flag SVGs the country list needs into `public/flags/` |
+| `npm run make:og` | Render `public/og-image.png` at 1200×630 |
 
 `npm run smoke` is the quickest way to catch a page that compiles but crashes at
 runtime. It builds `scripts/smoke.tsx` for SSR, renders every route to a string,

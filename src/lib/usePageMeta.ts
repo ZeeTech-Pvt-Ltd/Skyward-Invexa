@@ -4,7 +4,7 @@ import { site } from '@/data/site'
 type PageMeta = {
   title: string
   description: string
-  /** Path only, e.g. "/about". Used to build the canonical URL. */
+  /** Path only, e.g. "/about". Used to build the canonical and og:url. */
   path: string
   /**
    * Keeps the page out of search results and omits the canonical link. The two
@@ -12,6 +12,8 @@ type PageMeta = {
    */
   noindex?: boolean
 }
+
+const OG_IMAGE = `${site.url}/og-image.png`
 
 function setMetaTag(
   selector: string,
@@ -34,29 +36,39 @@ function removeMetaTag(selector: string) {
 
 /**
  * Client-side equivalent of a document head. Runs on every route change so a
- * single-page app still gets per-page titles, descriptions and canonicals.
+ * single-page app still gets per-page titles, descriptions, canonicals and
+ * social cards. The static tags in index.html cover the first paint; this
+ * corrects them once the route is known.
  */
 export function usePageMeta({ title, description, path, noindex = false }: PageMeta) {
   useEffect(() => {
     const fullTitle = title === site.name ? title : `${title} | ${site.name}`
+    const url = `${site.url}${path === '/' ? '/' : path}`
 
     document.title = fullTitle
+
     setMetaTag('meta[name="description"]', 'name', 'description', description)
     setMetaTag('meta[property="og:title"]', 'property', 'og:title', fullTitle)
     setMetaTag('meta[property="og:description"]', 'property', 'og:description', description)
+    setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', fullTitle)
+    setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', description)
 
     if (noindex) {
       setMetaTag('meta[name="robots"]', 'name', 'robots', 'noindex, nofollow')
-      // A canonical on a noindex page contradicts the noindex, so drop it.
+      // A canonical, a share URL or a share card on a noindex page all
+      // contradict the noindex, so they come off with it.
       removeMetaTag('link[rel="canonical"]')
       removeMetaTag('meta[property="og:url"]')
+      removeMetaTag('meta[property="og:image"]')
+      removeMetaTag('meta[name="twitter:image"]')
       return
     }
 
     removeMetaTag('meta[name="robots"]')
 
-    const url = `${site.url}${path === '/' ? '/' : path}`
     setMetaTag('meta[property="og:url"]', 'property', 'og:url', url)
+    setMetaTag('meta[property="og:image"]', 'property', 'og:image', OG_IMAGE)
+    setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', OG_IMAGE)
 
     let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
     if (!canonical) {
