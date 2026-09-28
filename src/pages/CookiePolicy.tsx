@@ -75,10 +75,12 @@ export default function CookiePolicy() {
             <TBody>
               {cookieCategories.map((category) => (
                 <TR key={category.name}>
-                  <TD className="font-medium text-heading">{category.name}</TD>
-                  <TD>{category.purpose}</TD>
-                  <TD>{category.examples}</TD>
-                  <TD>
+                  <TD label="Category" className="font-medium text-heading">
+                    {category.name}
+                  </TD>
+                  <TD label="Purpose">{category.purpose}</TD>
+                  <TD label="Typical contents">{category.examples}</TD>
+                  <TD label="Optional">
                     <Badge tone={category.optional ? 'brand' : 'neutral'}>
                       {category.optional ? 'You Choose' : 'Always On'}
                     </Badge>

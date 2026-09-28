@@ -42,7 +42,7 @@ export default function ThankYou() {
             <Icon name="check" className="size-8 text-mint-600" />
           </span>
 
-          <h1 className="mt-7 text-3xl leading-tight font-semibold sm:text-4xl lg:text-5xl">
+          <h1 className="mx-auto mt-7 max-w-3xl text-3xl leading-tight font-semibold text-balance sm:text-4xl lg:text-5xl">
             Thank You for Contacting Skyward Invexa
           </h1>
 

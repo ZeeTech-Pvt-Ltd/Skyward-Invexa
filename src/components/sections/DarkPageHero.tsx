@@ -32,11 +32,15 @@ export function DarkPageHero({ eyebrow, title, lead, aside, children }: DarkPage
             Boolean(aside) && 'lg:grid-cols-[1.15fr_0.85fr] lg:gap-16',
           )}
         >
-          <div>
+          {/* min-w-0 on both grid items: a grid child defaults to min-width:auto,
+              which floors its track at the child's min-content width. Without
+              this the columns stay wider than the container on a narrow phone
+              and the copy overflows off the right edge. */}
+          <div className="min-w-0">
             <p className="font-display text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">
               {eyebrow}
             </p>
-            <h1 className="mt-4 text-3xl leading-[1.1] font-semibold tracking-tight text-hero-fg sm:text-4xl lg:text-5xl">
+            <h1 className="mt-4 text-[clamp(1.7rem,3.2vw,2.9rem)] leading-[1.12] font-semibold tracking-tight text-balance text-hero-fg">
               {title}
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-hero-muted sm:text-lg">
@@ -45,7 +49,7 @@ export function DarkPageHero({ eyebrow, title, lead, aside, children }: DarkPage
             {children}
           </div>
 
-          {aside}
+          {aside ? <div className="min-w-0">{aside}</div> : null}
         </div>
       </Container>
     </section>
