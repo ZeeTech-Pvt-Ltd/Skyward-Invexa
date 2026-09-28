@@ -17,7 +17,8 @@
     "sync:flags": "node scripts/sync-flags.mjs",
     "check:flags": "node scripts/check-flags.mjs",
     "make:og": "node scripts/make-og-image.mjs",
-    "audit": "node scripts/audit.mjs"
+    "audit": "node scripts/audit.mjs",
+    "check:csp": "node scripts/check-csp.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

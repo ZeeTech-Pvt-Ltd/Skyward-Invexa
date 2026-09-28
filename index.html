@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#081c2d" />
+    <meta name="google-site-verification" content="fC0RL8-q9GDN8OFknq-qEvZ18Si8u5Lq3BWhAZ3W_q4" />
 
     <!-- Static head. These are what a crawler sees without running JS, so they
          mirror the home page values and stay inside the ~60/160 character
@@ -85,6 +86,11 @@
         ]
       }
     </script>
+    <!-- Google Analytics. The init is a local file rather than an inline block
+         so the Content-Security-Policy in vercel.json can keep script-src
+         without 'unsafe-inline'. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WL8TB0TXE"></script>
+    <script src="/gtag-init.js"></script>
   </head>
   <body>
     <div id="root"></div>
