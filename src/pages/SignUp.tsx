@@ -19,7 +19,7 @@ export default function SignUp() {
   usePageMeta({
     title: 'Sign Up',
     description:
-      'Open a Skyward Invexa account. Submit your details to begin identity verification and get access to digital assets, ASX-listed equities, foreign exchange and commodities.',
+      'Open a Skyward Invexa account. Submit your details to begin identity verification and get access to digital assets, ASX-listed equities, FX and commodities.',
     path: '/sign-up',
   })
 

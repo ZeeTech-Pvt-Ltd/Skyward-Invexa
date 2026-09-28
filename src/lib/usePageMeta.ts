@@ -42,7 +42,9 @@ function removeMetaTag(selector: string) {
  */
 export function usePageMeta({ title, description, path, noindex = false }: PageMeta) {
   useEffect(() => {
-    const fullTitle = title === site.name ? title : `${title} | ${site.name}`
+    // Append the brand only when the title does not already carry it, or the
+    // homepage ends up reading "Skyward Invexa | ... | Skyward Invexa".
+    const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`
     const url = `${site.url}${path === '/' ? '/' : path}`
 
     document.title = fullTitle

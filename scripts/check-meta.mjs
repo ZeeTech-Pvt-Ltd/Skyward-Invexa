@@ -9,6 +9,7 @@
  *
  * Run: npm run check:meta
  */
+import { readFileSync } from 'node:fs'
 import { chromium } from 'playwright-core'
 
 const BASE = process.env.SHOT_BASE ?? 'http://localhost:5180'
@@ -27,6 +28,36 @@ const ROUTES = [
   ['/thank-you', 'noindex, nofollow'],
   ['/this-path-does-not-exist', 'noindex, nofollow'],
 ]
+
+/**
+ * The static head in index.html is what a crawler sees without running JS, so
+ * it has to satisfy the same limits as the rendered one.
+ */
+function checkStaticHead() {
+  const html = readFileSync('dist/index.html', 'utf8')
+  const title = (html.match(/<title>([^<]*)<\/title>/) ?? [])[1] ?? ''
+  const description =
+    (html.match(/<meta\s+name="description"\s+content="([^"]*)"/) ?? [])[1] ?? ''
+
+  const problems = []
+  if (!title) problems.push('no <title>')
+  else if (title.length > 60) problems.push(`title is ${title.length} chars, over 60`)
+  if (!description) problems.push('no description')
+  else if (description.length > 160) {
+    problems.push(`description is ${description.length} chars, over 160`)
+  }
+
+  if (problems.length) {
+    failures += 1
+    console.log(`  FAIL index.html (static)      ${problems.join('; ')}`)
+  } else {
+    console.log(
+      `  ok   index.html (static)      t:${String(title.length).padStart(3)} d:${String(description.length).padStart(3)}  (no-JS crawlers)`,
+    )
+  }
+}
+
+checkStaticHead()
 
 const browser = await chromium.launch({ channel: 'chrome' })
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
@@ -83,10 +114,23 @@ for (const [path, expectedRobots] of ROUTES) {
     problems.push('canonical is missing')
   }
 
-  if (!meta.title || meta.title.length < 15) problems.push('title is missing or too short')
+  // Google shows roughly 60 characters of a title and 160 of a description.
+  // Anything longer is truncated in the result, so treat it as a defect.
+  if (!meta.title || meta.title.length < 15) {
+    problems.push('title is missing or too short')
+  } else if (meta.title.length > 60) {
+    problems.push(`title is ${meta.title.length} chars, over the 60 that show`)
+  }
+
   if (!meta.description || meta.description.length < 50) {
     problems.push('description is missing or too short')
+  } else if (meta.description.length > 160) {
+    problems.push(`description is ${meta.description.length} chars, over the 160 that show`)
   }
+
+  // The brand should appear once, not twice.
+  const brandHits = (meta.title.match(/Skyward Invexa/g) ?? []).length
+  if (brandHits > 1) problems.push(`the brand appears ${brandHits} times in the title`)
   if (!meta.twitterCard) problems.push('twitter:card is missing')
   if (!meta.ldValid) problems.push('a JSON-LD block does not parse')
 
@@ -105,7 +149,7 @@ for (const [path, expectedRobots] of ROUTES) {
     const state = meta.robots ? 'noindex' : 'indexable'
     const card = meta.ogImage ? 'yes' : 'no'
     console.log(
-      `  ok   ${path.padEnd(26)} ${state.padEnd(10)} card:${card.padEnd(4)} ld:[${meta.ldTypes.join(',') || '-'}]`,
+      `  ok   ${path.padEnd(26)} ${state.padEnd(10)} card:${card.padEnd(4)} t:${String(meta.title.length).padStart(3)} d:${String(meta.description.length).padStart(3)}  ld:[${meta.ldTypes.join(',') || '-'}]`,
     )
   }
 }

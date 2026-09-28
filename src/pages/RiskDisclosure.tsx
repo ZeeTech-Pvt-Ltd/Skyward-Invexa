@@ -12,7 +12,7 @@ export default function RiskDisclosure() {
   usePageMeta({
     title: 'Risk Disclosure',
     description:
-      'The Skyward Invexa risk disclosure statement: how leverage, volatility, gapping, liquidity and execution risk can affect your positions, and what to do before you trade.',
+      'The Skyward Invexa risk disclosure statement: how leverage, volatility, gapping, liquidity and execution risk can affect your positions before you trade.',
     path: '/risk-disclosure',
   })
 

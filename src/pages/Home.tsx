@@ -28,9 +28,9 @@ import { StepsSection } from '@/components/sections/StepsSection'
  */
 export default function Home() {
   usePageMeta({
-    title: 'Skyward Invexa | Multi-Asset Market Access for Australian Investors',
+    title: 'Skyward Invexa | Multi-Asset Market Access in Australia',
     description:
-      'One account for digital assets, ASX-listed equities, foreign exchange and commodities. Published fees, order-ticket risk controls, and no performance promises.',
+      'One account for digital assets, ASX-listed equities, FX and commodities. Published fees, risk controls on the order ticket, and no performance promises.',
     path: '/',
   })
 
