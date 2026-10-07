@@ -1,11 +1,7 @@
+import { hero } from '@/data/content'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { Icon } from '@/components/ui/Icon'
-
-const assurances = [
-  'No account or inactivity fee',
-  'Fund in Australian dollars',
-]
 
 export function Hero() {
   return (
@@ -15,47 +11,43 @@ export function Hero() {
       <div className="grid-lines pointer-events-none absolute inset-0" aria-hidden="true" />
 
       <Container className="relative py-16 sm:py-20 lg:py-24">
-        <div className="grid items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-400/40 bg-brand-400/10 px-3.5 py-1.5 text-xs font-medium tracking-wide text-brand-300">
+        <div className="grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div className="min-w-0">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-400/10 px-3.5 py-1.5 text-xs font-medium tracking-wide text-brand-300">
               <Icon name="globe" className="size-3.5" />
-              Built for Australian investors
+              {hero.eyebrow}
             </span>
 
-            <h1 className="mt-7 text-[2.6rem] leading-[1.02] font-semibold tracking-tight text-hero-fg sm:text-5xl lg:text-[3.6rem]">
-              Skyward Invexa
-              <span className="mt-3 block text-xl leading-snug font-medium sm:text-2xl lg:text-[1.6rem]">
-                Multi-Asset Market Access for Australian Investors
-              </span>
+            <h1 className="mt-7 text-[2.4rem] leading-[1.05] font-semibold tracking-tight text-hero-fg sm:text-5xl lg:text-[3.2rem]">
+              {hero.heading}
             </h1>
 
-            <p className="mt-7 max-w-xl text-base leading-relaxed text-hero-muted sm:text-lg">
-              One account for digital assets, ASX-listed equities, foreign exchange and commodity
-              contracts. Published fees, risk controls on the order ticket, and no performance
-              promises, because we can&apos;t make any.
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-hero-muted sm:text-lg">
+              {hero.sub}
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Button to="/sign-up" variant="light" size="lg">
-                Open an Account
-                <span aria-hidden="true">→</span>
-              </Button>
-              <Button href="#register" variant="outlineLight" size="lg">
-                Get Started
-              </Button>
-            </div>
-
-            <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-hero-muted">
-              {assurances.map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <Icon name="check" className="size-3.5 text-brand-300" />
-                  {item}
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+              {hero.bullets.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-hero-muted">
+                  <Icon name="check" className="mt-0.5 size-4 shrink-0 text-brand-300" />
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Button to="/sign-up" variant="light" size="lg">
+                {hero.cta}
+              </Button>
+              <Button href="#register" variant="outlineLight" size="lg">
+                See the Platform
+              </Button>
+            </div>
+
+            <p className="mt-5 max-w-lg text-xs leading-relaxed text-hero-muted">{hero.micro}</p>
           </div>
 
-          <div className="relative lg:pl-6">
+          <div className="relative lg:pl-2">
             {/* Two encodes: 1x screens take the 138KB file, retina the larger
                 one. The dimensions reserve the box so nothing shifts. */}
             <img
@@ -71,7 +63,6 @@ export function Hero() {
             />
           </div>
         </div>
-
       </Container>
     </section>
   )

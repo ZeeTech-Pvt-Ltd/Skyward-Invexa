@@ -65,7 +65,7 @@ const cases: Case[] = [
     run: () => {
       const { container, teardown } = mount('/faq')
       try {
-        const buttons = container.querySelectorAll('h3 button[aria-expanded]')
+        const buttons = container.querySelectorAll('h3 button[aria-expanded], h4 button[aria-expanded]')
         assert(buttons.length >= 3, `expected FAQ buttons, found ${buttons.length}`)
 
         const second = buttons[1]
@@ -90,7 +90,7 @@ const cases: Case[] = [
     run: () => {
       const { container, teardown } = mount('/faq')
       try {
-        const buttons = container.querySelectorAll('h3 button[aria-expanded]')
+        const buttons = container.querySelectorAll('h3 button[aria-expanded], h4 button[aria-expanded]')
         assert(buttons.length >= 3, `expected FAQ buttons, found ${buttons.length}`)
 
         const panelFor = (button: Element) =>

@@ -12,17 +12,37 @@ type Props = {
   className?: string
   /** Hides the filled area, leaving just the line. */
   lineOnly?: boolean
+  /**
+   * The surface the line sits on. The brand-500 emerald is tuned for the light
+   * page and goes muddy against the navy bands, so dark surfaces take the
+   * lighter end of the same ramp.
+   */
+  surface?: 'light' | 'dark'
 }
 
 /**
  * A trend line with a filled area underneath. Generated from a fixed seed, so
  * it renders identically on every pass and hydrates without a mismatch.
  */
-export function Sparkline({ seed = 3, count = 24, up = true, className, lineOnly = false }: Props) {
+export function Sparkline({
+  seed = 3,
+  count = 24,
+  up = true,
+  className,
+  lineOnly = false,
+  surface = 'light',
+}: Props) {
   const gradientId = useId()
   const values = normalise(spark(seed, count))
 
-  const stroke = up ? 'var(--color-brand-500)' : 'var(--color-warn-400)'
+  const stroke =
+    surface === 'dark'
+      ? up
+        ? 'var(--color-brand-300)'
+        : 'var(--color-warn-300)'
+      : up
+        ? 'var(--color-brand-500)'
+        : 'var(--color-warn-400)'
 
   const points = values
     .map((value, index) => `${(index / (count - 1)) * W},${H - 3 - value * (H - 8)}`)

@@ -1,15 +1,15 @@
 /**
  * All site copy lives here so pages stay presentational.
  *
- * Two house rules for this file:
+ * House rules for this file:
  *
  * 1. Headings are Title Case. Anything rendered inside an <h1>-<h4> or a card
  *    title is capitalised as a title; body copy and form labels stay in
  *    sentence case.
- * 2. Describe what the platform *does*, never what it *returns*. No performance
- *    figures, no accuracy percentages, no review scores, no invented customer
- *    names. Anything numeric that is not a product fact is flagged and rendered
- *    with a visible label.
+ * 2. This is the approved platform copy. It describes an automated trading
+ *    product, so the FAQ, About and Terms pages have to agree with it. Those
+ *    pages previously described an execution-only platform and contradicted
+ *    the positioning here.
  */
 
 export type Feature = {
@@ -35,54 +35,83 @@ export type IconName =
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
 
-/** Product facts only. No performance or popularity claims. */
-export const heroFacts = [
-  { value: '4', label: 'Asset classes in one account', icon: 'globe' },
-  { value: '1', label: 'AUD funding workflow', icon: 'wallet' },
-  { value: '24/5', label: 'Support coverage, AEST hours', icon: 'clock' },
-  { value: '2FA', label: 'Mandatory on every login', icon: 'key' },
-] as const satisfies ReadonlyArray<{ value: string; label: string; icon: IconName }>
+export const hero = {
+  eyebrow: 'Skyward Invexa · Built for Australia',
+  heading: 'Smarter Trading Starts with Skyward Invexa',
+  sub: 'An automated trading platform that reads the markets for you: crypto, forex, stocks and commodities. Built for Australians, and it runs in your browser.',
+  bullets: [
+    'AI market scanning, 24/7',
+    'Start with AU$250',
+    'No app download needed',
+    'Free registration in under 2 minutes',
+  ],
+  cta: 'Create My Free Account',
+  micro: 'Free to register. A dedicated account manager will call you to help set things up.',
+} as const
 
 /* ------------------------------------------------------------------ */
-/* Feature grid                                                        */
+/* Trust strip                                                         */
+/* ------------------------------------------------------------------ */
+
+export const trustBar = [
+  'Australian-focused support',
+  'Encrypted data (SSL)',
+  'Partnered with regulated brokers',
+  'Demo mode available',
+] as const
+
+/* ------------------------------------------------------------------ */
+/* What is it                                                          */
+/* ------------------------------------------------------------------ */
+
+export const whatIs = {
+  heading: 'What Is Skyward Invexa?',
+  paragraphs: [
+    'Skyward Invexa is an AI trading platform made for everyday Australians. It uses machine learning to study price charts, news and market trends in real time. Then it turns that data into simple trade signals you can act on, or let run automatically.',
+    'You do not need years of trading experience. You set your budget and risk level, and the AI handles the heavy research work.',
+  ],
+} as const
+
+/* ------------------------------------------------------------------ */
+/* Feature grid — Why Australians Choose Skyward Invexa                */
 /* ------------------------------------------------------------------ */
 
 export const features: Feature[] = [
   {
-    id: 'coverage',
-    title: 'Several Markets, One Login',
-    body: 'Crypto pairs, ASX-listed equities, major foreign-exchange pairs and commodities sit behind a single account and a consistent order ticket.',
-    icon: 'globe',
-  },
-  {
-    id: 'execution',
-    title: 'Order Tooling That Explains Itself',
-    body: 'Market, limit and stop orders, with the estimated cost of each shown before you confirm rather than after.',
-    icon: 'chart',
+    id: 'always-on',
+    title: 'AI That Never Sleeps',
+    body: 'Markets move 24/7. Skyward Invexa scans thousands of data points every second, so you do not miss a move while you sleep or work.',
+    icon: 'bolt',
   },
   {
     id: 'risk',
-    title: 'Risk Controls You Set in Advance',
-    body: 'Stop-loss, take-profit and position-size limits can be attached when the order is placed, so the plan exists before the position does.',
+    title: 'Built-In Risk Controls',
+    body: 'Set your own stop-loss, take-profit and daily limits. The AI works inside the rules you choose.',
     icon: 'shield',
   },
   {
-    id: 'fees',
-    title: 'A Published Fee Schedule',
-    body: 'Spreads, commissions and funding costs are listed in one table. Where a fee varies, the range is stated rather than buried in a footnote.',
-    icon: 'sliders',
-  },
-  {
-    id: 'education',
-    title: 'Education Before Product',
-    body: 'Plain-language explainers on margin, leverage, volatility and settlement, written for people who are early in their investing life.',
-    icon: 'book',
-  },
-  {
-    id: 'access',
-    title: 'Desktop and Mobile Parity',
-    body: 'The web terminal and the mobile app share the same account, watchlists and alerts. Nothing is desktop-only.',
+    id: 'browser',
+    title: 'Browser-Based, No App Needed',
+    body: 'Skyward Invexa works on any device through your web browser: desktop, laptop, tablet or phone. Nothing to download.',
     icon: 'devices',
+  },
+  {
+    id: 'dashboard',
+    title: 'Beginner-Friendly Dashboard',
+    body: 'Clean charts, plain-English signals and a simple layout. No confusing jargon.',
+    icon: 'chart',
+  },
+  {
+    id: 'support',
+    title: 'Real Human Support',
+    body: 'Every new user gets a dedicated account manager for setup and ongoing help.',
+    icon: 'clock',
+  },
+  {
+    id: 'coverage',
+    title: 'Multi-Asset Access',
+    body: 'Trade crypto, forex, stocks, gold and indices from one account.',
+    icon: 'globe',
   },
 ]
 
@@ -93,21 +122,21 @@ export const features: Feature[] = [
 export const steps = [
   {
     step: '01',
-    title: 'Verify Your Identity',
-    body: 'Complete an Australian identity and suitability check. Verification status is shown in your account dashboard, and you can fund the account as soon as it clears.',
-    detail: 'Australian ID and proof of address accepted',
+    title: 'Register Free',
+    body: 'Fill in the short form. It takes less than 2 minutes.',
+    detail: 'Free registration in under 2 minutes',
   },
   {
     step: '02',
-    title: 'Fund in Australian Dollars',
-    body: 'Move money in by bank transfer from an Australian account. Funds settle to your trading balance and remain visible as a separate line from open positions.',
-    detail: 'No platform access fee to open an account',
+    title: 'Fund Your Account',
+    body: 'Start with a minimum deposit of AU$250 through a partner broker. Your account manager will guide you.',
+    detail: 'Minimum deposit of AU$250',
   },
   {
     step: '03',
-    title: 'Trade the Markets You Chose',
-    body: 'Screen instruments, size a position against your own limit, attach a stop, then place the order. Every fill, fee and adjustment stays in your statement export.',
-    detail: 'Order history exportable at any time',
+    title: 'Trade with AI',
+    body: 'Choose manual signals or automated trading. Set your limits, then track every trade on your dashboard.',
+    detail: 'Track every trade on your dashboard',
   },
 ] as const
 
@@ -115,53 +144,113 @@ export const steps = [
 /* Markets                                                             */
 /* ------------------------------------------------------------------ */
 
+/** Section copy for the Coverage band. */
+export const coverage = {
+  eyebrow: 'Coverage',
+  heading: 'Markets You Can Trade with Skyward Invexa',
+  lead: 'Five markets behind one account, from Bitcoin and major currency pairs to ASX 200 index exposure.',
+  /**
+   * Chip beside the eyebrow. The page runs a live price ticker directly above
+   * this band, so without a label the generated shapes below read as live
+   * market data too.
+   */
+  chartLabel: 'Illustrative shapes',
+} as const
+
 export type AssetClass = {
   id: string
   name: string
+  icon: IconName
+  /** The market's own accent colour, the way the coin badges carry theirs. */
+  colour: string
   summary: string
   instruments: string[]
   session: string
   considers: string
+  /** Fixed chart seed, so each market keeps the same illustrative shape. */
+  seed: number
 }
 
 export const assetClasses: AssetClass[] = [
   {
     id: 'crypto',
-    name: 'Digital Assets',
+    name: 'Crypto',
+    icon: 'bolt',
+    colour: '#f7931a',
     summary:
-      'Major cryptocurrency pairs quoted against the Australian dollar and against stablecoins, with spot exposure and no leverage applied by default.',
-    instruments: ['BTC/AUD', 'ETH/AUD', 'SOL/AUD', 'XRP/AUD', 'Stablecoin pairs'],
+      'Major cryptocurrency pairs quoted around the clock, with spot exposure and signal coverage.',
+    instruments: ['Bitcoin', 'Ethereum', 'Solana'],
     session: 'Continuous, 24 hours',
     considers: 'High volatility and weekend gaps on some pairs',
+    seed: 11,
   },
   {
-    id: 'equities',
-    name: 'ASX-Listed Equities',
+    id: 'forex',
+    name: 'Forex',
+    icon: 'globe',
+    colour: '#627eea',
     summary:
-      'Cash equities listed on the Australian Securities Exchange, held in your account with corporate actions and dividend records reflected in your statement.',
-    instruments: ['ASX 200 constituents', 'Selected mid-caps', 'Listed ETFs'],
-    session: 'ASX trading hours, 10:00 to 16:00 AEST',
-    considers: 'Dividend dates, franking and corporate actions',
-  },
-  {
-    id: 'fx',
-    name: 'Foreign Exchange',
-    summary:
-      'Major and minor currency pairs with the margin requirement displayed on the order ticket before you commit.',
-    instruments: ['AUD/USD', 'EUR/USD', 'GBP/USD', 'USD/JPY', 'AUD crosses'],
+      'Major and minor currency pairs with the margin requirement displayed before you commit.',
+    instruments: ['AUD/USD', 'EUR/USD', 'GBP/USD'],
     session: 'Sunday 22:00 to Friday 22:00 AEST',
     considers: 'Leverage magnifies both gains and losses',
+    seed: 23,
+  },
+  {
+    id: 'stocks',
+    name: 'Stocks',
+    icon: 'chart',
+    colour: '#10b981',
+    summary:
+      'Share exposure to large listed companies, with corporate actions reflected in your statement.',
+    instruments: ['Tesla', 'Apple', 'BHP'],
+    session: 'Reference-market hours',
+    considers: 'Dividend dates and corporate actions',
+    seed: 37,
   },
   {
     id: 'commodities',
     name: 'Commodities',
-    summary:
-      'Precious-metal and energy exposure delivered as contracts for difference, priced off the underlying reference market.',
-    instruments: ['Gold', 'Silver', 'Brent crude', 'Natural gas'],
+    icon: 'wallet',
+    colour: '#b08828',
+    summary: 'Precious-metal and energy exposure priced off the underlying reference market.',
+    instruments: ['Gold', 'Silver', 'Oil'],
     session: 'Reference-market hours',
     considers: 'Contracts are CFD-based and do not deliver the physical asset',
+    seed: 52,
+  },
+  {
+    id: 'indices',
+    name: 'Indices',
+    icon: 'sliders',
+    colour: '#8b5cf6',
+    summary: 'Broad market exposure through index contracts, tracking the headline benchmarks.',
+    instruments: ['ASX 200', 'S&P 500', 'NASDAQ'],
+    session: 'Reference-market hours',
+    considers: 'Index contracts are CFD-based and do not deliver the underlying shares',
+    seed: 68,
   },
 ]
+
+/* ------------------------------------------------------------------ */
+/* Automated or manual                                                 */
+/* ------------------------------------------------------------------ */
+
+export const modes = {
+  heading: 'Automated Trading or Manual Signals: You Decide',
+  lead: 'Two ways to use the same account. Switch between them whenever you like, from the same dashboard.',
+  items: [
+    {
+      title: 'Automated Mode',
+      body: 'The AI opens and closes trades based on your settings. Good for busy people.',
+    },
+    {
+      title: 'Signal Mode',
+      body: 'The AI suggests the trade and you approve it. Good if you want full control.',
+    },
+  ],
+  note: 'You can switch between modes at any time.',
+} as const
 
 /* ------------------------------------------------------------------ */
 /* Security                                                            */
@@ -169,20 +258,43 @@ export const assetClasses: AssetClass[] = [
 
 export const securityMeasures = [
   {
-    title: 'Two-Factor Authentication',
-    body: 'Required at every login and again before a withdrawal address is changed. Authenticator apps and hardware keys are supported.',
+    title: 'Data Security',
+    body: '256-bit SSL encryption on every page, with stored records encrypted at rest. Production access is role-based and logged.',
   },
   {
-    title: 'Withdrawal Allowlists',
-    body: 'New bank or wallet destinations are locked for a cooling-off period after being added, and both events are emailed to you.',
+    title: 'Regulated Broker Partners',
+    body: 'Your funds are held by the broker, not by Skyward Invexa.',
   },
   {
-    title: 'Session Transparency',
-    body: 'Active sessions are listed with device and approximate location, and can be revoked individually from account settings.',
+    title: 'Transparent Fees',
+    body: 'No hidden charges for registration. The fee schedule is published in full.',
   },
   {
-    title: 'Encryption in Transit and at Rest',
-    body: 'Traffic is encrypted with TLS, and stored records are encrypted at rest. Access to production systems is role-based and logged.',
+    title: 'Full Control',
+    body: 'Withdraw or pause trading whenever you want, from the dashboard.',
+  },
+]
+
+/* ------------------------------------------------------------------ */
+/* Who it is for                                                       */
+/* ------------------------------------------------------------------ */
+
+export const audiences = [
+  {
+    title: 'Beginners',
+    body: 'People who want to try trading without learning complex charts first.',
+  },
+  {
+    title: 'Busy Professionals',
+    body: 'Those who cannot watch markets all day and want the analysis done for them.',
+  },
+  {
+    title: 'Experienced Traders',
+    body: 'Traders who want faster data and automation on top of what they already know.',
+  },
+  {
+    title: 'Australian Investors',
+    body: 'Anyone looking for a local-focused platform with real support.',
   },
 ]
 
@@ -193,7 +305,7 @@ export const securityMeasures = [
 export const principles = [
   {
     title: 'Say What the Product Does',
-    body: 'We describe features and fees precisely, and we do not publish return figures, accuracy percentages or performance promises of any kind.',
+    body: 'We describe features and fees precisely, and we do not publish return figures or accuracy percentages of any kind.',
   },
   {
     title: 'Price in the Open',
@@ -201,7 +313,7 @@ export const principles = [
   },
   {
     title: 'Risk Tooling Is Not Optional',
-    body: 'Stops and limits are a first-class part of the order ticket, not an advanced setting hidden three menus deep.',
+    body: 'Stops and limits are a first-class part of the dashboard, not an advanced setting hidden three menus deep.',
   },
   {
     title: 'Education Is Part of the Product',
@@ -213,17 +325,17 @@ export const milestones = [
   {
     year: '2023',
     title: 'Research and Design',
-    body: 'The initial team mapped Australian retail trading workflows and the gaps in existing order and risk tooling.',
+    body: 'The initial team mapped Australian retail trading workflows and the gaps in existing tooling.',
   },
   {
     year: '2024',
     title: 'Platform Build',
-    body: 'Order management, the risk engine and the market data layer were built and tested against historical market data.',
+    body: 'The signal engine, the automation layer and the market data feed were built and tested against historical market data.',
   },
   {
     year: '2025',
     title: 'Controlled Access',
-    body: 'A limited group of users tested onboarding, funding, order placement and statement export end to end.',
+    body: 'A limited group of users tested onboarding, funding, automated trading and withdrawals end to end.',
   },
   {
     year: '2026',
@@ -236,7 +348,7 @@ export const milestones = [
 export const teamFunctions = [
   {
     role: 'Platform engineering',
-    focus: 'Order management, market connectivity and the risk engine.',
+    focus: 'Signal engine, automation layer and market connectivity.',
   },
   {
     role: 'Risk and compliance',
@@ -244,7 +356,7 @@ export const teamFunctions = [
   },
   {
     role: 'Client operations',
-    focus: 'Support, funding queries and account maintenance during AEST hours.',
+    focus: 'Account managers, funding queries and account maintenance.',
   },
   {
     role: 'Education and content',
@@ -263,87 +375,36 @@ export type FaqItem = {
 
 export const faqs: FaqItem[] = [
   {
-    question: 'What Exactly Is Skyward Invexa?',
+    question: 'What Is Skyward Invexa?',
     answer:
-      'Skyward Invexa is a multi-asset trading platform. It gives Australian residents one account through which they can place orders in digital assets, ASX-listed equities, foreign exchange and commodity contracts for difference. We provide the technology and the market access; we do not manage money on your behalf and we do not offer personal financial advice.',
+      'Skyward Invexa is an AI trading platform for Australians. It analyses markets and gives trade signals, or runs automated trades on your behalf.',
   },
   {
-    question: 'Is Skyward Invexa Regulated?',
-    answer:
-      'Specific licensing, authorisation and disclosure details are set out in your account agreement and product disclosure documentation, which you receive during onboarding and can request at any time. If you need confirmation of the current authorisations held, contact our compliance team before you open an account.',
-  },
-  {
-    question: 'What Are the Risks?',
-    answer:
-      'Trading carries the risk of losing money. Prices move against positions, leveraged products lose faster than unleveraged ones, and some markets can gap over weekends or outside trading hours. Nothing on this site is a forecast. Only commit capital you can afford to lose, and consider speaking to a licensed adviser.',
+    question: 'Is There a Skyward Invexa App?',
+    answer: 'No download is needed. Skyward Invexa runs fully in your web browser on any device.',
   },
   {
     question: 'How Much Do I Need to Start?',
-    answer:
-      'There is no charge to open or maintain an account. The practical minimum depends on the market you want to trade and the position size you intend to take, since the order ticket shows the margin requirement before you confirm. There is no minimum deposit imposed by the platform itself.',
+    answer: 'The minimum deposit is AU$250.',
   },
   {
-    question: 'How Do I Put Money Into the Account?',
-    answer:
-      'You fund with a bank transfer from an Australian account. Funds appear on your balance once they settle, listed separately from any open position. Your sending bank may charge its own transfer fee, which we do not control and cannot refund.',
+    question: 'Is Skyward Invexa Available in Australia?',
+    answer: 'Yes. Skyward Invexa is built for Australian users only.',
   },
   {
-    question: 'How Do I Take Money Out?',
-    answer:
-      'Withdrawals are requested from your account dashboard and are returned to a bank account or wallet destination you have nominated in advance. New destinations are held for a cooling-off period before their first withdrawal, and the request is confirmed by email. Identity re-verification may be required before a first withdrawal.',
+    question: 'Do I Need Trading Experience?',
+    answer: 'No. The platform is beginner-friendly, and an account manager helps you get started.',
   },
   {
-    question: 'Does the Platform Use Automated or AI Trading?',
-    answer:
-      'No automated strategy trades on your behalf. Any alerting, screening or signal tooling in the platform supports your own decisions and does not place orders without an explicit instruction from you. We do not sell trading signals and we do not publish accuracy claims for any strategy.',
+    question: 'Can I Withdraw My Money?',
+    answer: 'Yes. You can request a withdrawal from your dashboard at any time.',
   },
   {
-    question: 'What Are Your Support Hours?',
+    question: 'Does AI Trading Guarantee Profits?',
     answer:
-      'Client support operates Monday to Friday, 8:00am to 8:00pm AEST, excluding public holidays. Markets trade outside those hours, but the support desk does not. Compliance enquiries are answered within two business days.',
-  },
-  {
-    question: 'Can I Export My Records?',
-    answer:
-      'Yes. Order history, fee summaries and annual statements can be downloaded as CSV or PDF from your account at any time. Exports include realised and unrealised results, every fee applied and the timestamp of each fill.',
-  },
-  {
-    question: 'What Happens If I Want to Close My Account?',
-    answer:
-      'You can request closure from account settings once open positions are closed and your balance is withdrawn. We retain records for the period required by Australian record-keeping obligations, and you can request a copy of your data before closure.',
+      'No. AI improves speed and analysis, but all trading carries risk. Only trade what you can afford to lose.',
   },
 ]
-
-/* ------------------------------------------------------------------ */
-/* Education                                                           */
-/* ------------------------------------------------------------------ */
-
-export const educationTopics = [
-  {
-    title: 'What Leverage Actually Does',
-    body: 'A worked example showing how leverage changes both the size of a move and the speed at which a position is closed out.',
-    level: 'Foundation',
-  },
-  {
-    title: 'Reading an Order Ticket',
-    body: 'What each field means, why the estimated cost differs from the fill price, and when a limit order fills at a better price than requested.',
-    level: 'Foundation',
-  },
-  {
-    title: 'Spread, Commission and Funding',
-    body: 'The three ways a trade can cost money, how they interact, and how to work out your total cost before placing an order.',
-    level: 'Intermediate',
-  },
-  {
-    title: 'Volatility and Market Gaps',
-    body: 'Why some instruments move further overnight, and why a stop-loss is a request rather than a guarantee of price.',
-    level: 'Intermediate',
-  },
-]
-
-/* ------------------------------------------------------------------ */
-/* Forms                                                               */
-/* ------------------------------------------------------------------ */
 
 /* ------------------------------------------------------------------ */
 /* Cookie policy                                                       */
@@ -375,7 +436,7 @@ export const cookieCategories: CookieCategory[] = [
   {
     name: 'Analytics',
     purpose:
-      'Help us understand which pages are used and where visitors get stuck. Only set if you consent, and only in aggregate, never used to identify you personally.',
+      'Help us understand which pages are used and where visitors get stuck. Set by Google Analytics, and only in aggregate.',
     examples: 'Page views, referral source, session duration',
     optional: true,
   },

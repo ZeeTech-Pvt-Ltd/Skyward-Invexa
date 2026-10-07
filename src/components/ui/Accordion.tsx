@@ -5,6 +5,12 @@ import { Icon } from './Icon'
 export type AccordionEntry = {
   question: string
   answer: string
+  /**
+   * Optional section label. The entry carrying it opens a group inside the
+   * same list, so a long FAQ stays one accordion (and keeps the one-panel-open
+   * rule) instead of becoming seven independent ones.
+   */
+  group?: string
 }
 
 type AccordionProps = {
@@ -22,6 +28,11 @@ export function Accordion({ items, defaultOpen = null, idPrefix, className }: Ac
   const [openIndex, setOpenIndex] = useState<number | null>(defaultOpen)
   const baseId = useId()
 
+  // Question level follows the group headers: with them the outline needs
+  // h3 for a group and h4 for a question, without them h3 is right.
+  const grouped = items.some((item) => item.group)
+  const QuestionTag = grouped ? 'h4' : 'h3'
+
   return (
     <div
       className={cn(
@@ -36,7 +47,12 @@ export function Accordion({ items, defaultOpen = null, idPrefix, className }: Ac
 
         return (
           <div key={item.question} id={idPrefix ? `${idPrefix}-${index}` : undefined} className="scroll-mt-28">
-            <h3>
+            {item.group ? (
+              <h3 className="bg-ink-900 px-5 pt-6 pb-2 font-display text-xs font-semibold tracking-[0.16em] text-brand-600 uppercase sm:px-6">
+                {item.group}
+              </h3>
+            ) : null}
+            <QuestionTag>
               <button
                 id={buttonId}
                 type="button"
@@ -56,7 +72,7 @@ export function Accordion({ items, defaultOpen = null, idPrefix, className }: Ac
                   )}
                 />
               </button>
-            </h3>
+            </QuestionTag>
             <div
               id={panelId}
               role="region"

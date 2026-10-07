@@ -1,13 +1,18 @@
-import { faqs } from '@/data/content'
+import type { FaqItem } from '@/data/content'
+import { faqs as siteFaqs } from '@/data/content'
 import { Icon } from '@/components/ui/Icon'
 
 /**
  * The FAQ hero panel: a question mark carrying the count, over a short index
  * of what is on the page. Deliberately no answer text, so it reads as a way
  * into the list below rather than a repeat of it.
+ *
+ * Takes the questions it indexes, because every marketing page carries its own
+ * set; it falls back to the home page's list when none is passed.
  */
-export function QuestionIndexPanel() {
-  const shown = faqs.slice(0, 3)
+export function QuestionIndexPanel({ items }: { items?: FaqItem[] }) {
+  const list = items?.length ? items : siteFaqs
+  const shown = list.slice(0, 3)
 
   return (
     <div className="rounded-2xl border border-hero-border bg-hero-surface p-6">
@@ -20,7 +25,7 @@ export function QuestionIndexPanel() {
         </span>
         <div className="min-w-0">
           <p className="font-display text-2xl leading-none font-semibold text-hero-fg">
-            {faqs.length} Questions
+            {list.length} Questions
           </p>
           <p className="mt-2 text-sm leading-snug text-hero-muted">
             answered on this page, in plain language.

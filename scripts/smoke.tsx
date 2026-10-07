@@ -17,23 +17,41 @@ type RouteCheck = {
   must: string[]
 }
 
+/**
+ * Every marketing page is rendered by one template, so these three markers
+ * prove the hero, the FAQ and the registration form all survived. A page that
+ * renders only its shell would still pass on them, so each route adds a marker
+ * from its own copy on top.
+ */
+const PAGE_MARKERS = ['Skyward Invexa', 'Frequently Asked Questions', 'Open Your Free Account Today']
+
 const routes: RouteCheck[] = [
   {
     path: '/',
     must: [
-      'Multi-Asset',
-      'Asset classes in one account',
-      'Order Ticket',
+      'Smarter Trading Starts with Skyward Invexa',
+      'Create My Free Account',
+      'What Is Skyward Invexa',
+      'Automated Trading or Manual Signals',
+      'Is Skyward Invexa Safe and Legit',
+      // The coverage band: the heading, the per-market detail underneath it,
+      // and the label that keeps the generated shapes from reading as prices.
+      'Markets You Can Trade with Skyward Invexa',
+      'Sunday 22:00 to Friday 22:00 AEST',
+      'Illustrative shapes',
+      'Frequently Asked Questions',
       // The home page form must be present, with the shared field set.
-      'Join Skyward Invexa',
+      'Open Your Free Account Today',
       'First Name',
       'Last Name',
       'Phone Number',
-      'Sign Up',
+      // The risk wording now lives inside the form, so this marker is what
+      // catches it being dropped in an edit.
+      'Trading carries risk',
     ],
   },
   { path: '/about', must: ['Skyward Invexa', 'Four Rules'] },
-  { path: '/faq', must: ['Skyward Invexa', 'What Are the Risks'] },
+  { path: '/faq', must: ['Skyward Invexa', 'Does Skyward Invexa Guarantee Profits', 'Deposits and Withdrawals'] },
   {
     path: '/contact',
     must: [
@@ -53,6 +71,27 @@ const routes: RouteCheck[] = [
   { path: '/privacy', must: ['Privacy Policy'] },
   { path: '/cookie-policy', must: ['Cookie Policy'] },
   { path: '/terms', must: ['Terms of Use', 'Risk Disclosure'] },
+
+  // Marketing pages. Each one is a data file rendered by the same template, so
+  // the shared markers come first and a page-specific one follows. A page that
+  // renders its hero but loses its body would still pass on the shared markers
+  // alone, which is why every entry names something from its own copy.
+  {
+    path: '/ai-crypto-trading',
+    must: [...PAGE_MARKERS, 'What Is AI Crypto Trading'],
+  },
+  { path: '/ai-forex-trading', must: [...PAGE_MARKERS, 'AI Forex Trading'] },
+  { path: '/ai-gold-trading', must: [...PAGE_MARKERS, 'AI Gold Trading'] },
+  { path: '/ai-stock-trading', must: [...PAGE_MARKERS, 'AI Stock Trading'] },
+  { path: '/how-it-works', must: [...PAGE_MARKERS, 'How Does'] },
+  { path: '/automated-trading', must: [...PAGE_MARKERS, 'Automated Trading'] },
+  { path: '/ai-trading-signals', must: [...PAGE_MARKERS, 'AI Trading Signals'] },
+  { path: '/risk-management-tools', must: [...PAGE_MARKERS, 'Risk Management'] },
+  { path: '/what-is-ai-trading', must: [...PAGE_MARKERS, 'What Is AI Trading'] },
+  { path: '/ai-trading-for-beginners', must: [...PAGE_MARKERS, 'Beginners'] },
+  { path: '/why-invest', must: [...PAGE_MARKERS, 'Why Invest'] },
+  { path: '/review', must: [...PAGE_MARKERS, 'Review'] },
+
   { path: '/this-route-does-not-exist', must: ['404'] },
 ]
 

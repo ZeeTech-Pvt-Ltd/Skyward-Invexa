@@ -1,22 +1,25 @@
-import { faqs } from '@/data/content'
 import { site } from '@/data/site'
+import { faqGroupNames, faqGroups } from '@/data/faq'
 import { usePageMeta } from '@/lib/usePageMeta'
 import { Callout } from '@/components/ui/Callout'
 import { Container } from '@/components/ui/Container'
 import { Icon } from '@/components/ui/Icon'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { Accordion } from '@/components/ui/Accordion'
 import { DarkPageHero } from '@/components/sections/DarkPageHero'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { QuestionIndexPanel } from '@/components/charts/QuestionIndexPanel'
-import { FaqSection } from '@/components/sections/FaqSection'
 import { CtaBand } from '@/components/sections/CtaBand'
+
+/** The list is grouped, so a jump link points at the first question in a group. */
+const indexOfGroup = (name: string) => faqGroups.findIndex((entry) => entry.group === name)
 
 export default function Faq() {
   usePageMeta({
-    title: 'Skyward Invexa FAQ | Accounts, Funding and Trading Risk',
+    title: 'Skyward Invexa FAQ | Deposits, Withdrawals and Safety',
     description:
-      'What Skyward Invexa is, how onboarding, funding and withdrawals work, what the risks are, and the limits of what the platform will do on your behalf.',
+      'Answers to the most common Skyward Invexa questions: how to sign up, the AU$250 deposit, withdrawals, how the AI trades, fees, tax and staying safe.',
     path: '/faq',
   })
 
@@ -28,7 +31,7 @@ export default function Faq() {
         data={{
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
-          mainEntity: faqs.map((item) => ({
+          mainEntity: faqGroups.map((item) => ({
             '@type': 'Question',
             name: item.question,
             acceptedAnswer: { '@type': 'Answer', text: item.answer },
@@ -39,14 +42,31 @@ export default function Faq() {
       <DarkPageHero
         eyebrow="FAQ"
         title="Skyward Invexa FAQ: Straight Answers, Including the Ones That Are Not Flattering"
-        lead="If a question is not answered here, ask us directly. We would rather answer it before you open an account than after."
-        aside={<QuestionIndexPanel />}
-      />
+        lead="Every question we are asked before someone opens an account, grouped by topic. If yours is not here, ask us directly. We would rather answer it before you sign up than after."
+        aside={<QuestionIndexPanel items={faqGroups} />}
+      >
+        <nav aria-label="Jump to a topic" className="mt-8">
+          <ul className="flex flex-wrap gap-2">
+            {faqGroupNames.map((name) => (
+              <li key={name}>
+                <a
+                  href={`#faq-${indexOfGroup(name)}`}
+                  className="inline-flex items-center rounded-full border border-hero-border bg-hero-surface px-3.5 py-1.5 text-xs font-medium text-hero-muted transition-colors hover:border-brand-400/40 hover:text-hero-fg"
+                >
+                  {name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </DarkPageHero>
 
       <Section>
         <Container>
           <div className="grid gap-12 lg:grid-cols-[2fr_1fr] lg:gap-16">
-            <FaqSection items={faqs} idPrefix="faq" />
+            {/* One accordion for the whole page, so the one-panel-open rule
+                holds across every group rather than restarting in each. */}
+            <Accordion items={faqGroups} idPrefix="faq" />
 
             <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
               <div className="hairline rounded-card bg-ink-850/70 p-6">
@@ -69,6 +89,10 @@ export default function Faq() {
                     >
                       {site.emails.compliance}
                     </a>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Icon name="clock" className="mt-0.5 size-4 shrink-0 text-ink-400" />
+                    <span className="text-ink-300">{site.supportHours}</span>
                   </li>
                 </ul>
               </div>
@@ -100,8 +124,8 @@ export default function Faq() {
       </Section>
 
       <CtaBand
-        title="Ready When You Are"
-        body="Opening an account takes a few minutes. Placing an order is entirely your decision."
+        title="Still Have a Question?"
+        body="Send it to us, or create your free account and your account manager will answer everything on your first call."
       />
     </>
   )

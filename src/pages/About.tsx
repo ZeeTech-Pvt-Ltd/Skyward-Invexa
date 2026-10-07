@@ -1,15 +1,27 @@
 import { milestones, principles, teamFunctions } from '@/data/content'
+import {
+  aboutFacts,
+  aboutFaqs,
+  aboutMission,
+  aboutPromise,
+  aboutProtections,
+} from '@/data/about'
 import { usePageMeta } from '@/lib/usePageMeta'
+import { Callout } from '@/components/ui/Callout'
 import { Card } from '@/components/ui/Card'
 import { Container } from '@/components/ui/Container'
 import { Icon } from '@/components/ui/Icon'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { TBody, TD, TH, THead, TR, Table } from '@/components/ui/Table'
 import { PanelFrame } from '@/components/ui/PanelFrame'
 import { CandlestickChart } from '@/components/charts/CandlestickChart'
 import { HeroShowcase } from '@/components/charts/HeroShowcase'
 import { DarkPageHero } from '@/components/sections/DarkPageHero'
+import { FaqSection } from '@/components/sections/FaqSection'
 import { CtaBand } from '@/components/sections/CtaBand'
+import { EnquiryForm } from '@/components/forms/EnquiryForm'
+import { JsonLd } from '@/components/seo/JsonLd'
 
 export default function About() {
   usePageMeta({
@@ -24,7 +36,7 @@ export default function About() {
       <DarkPageHero
         eyebrow="About"
         title="About Skyward Invexa: A Software Company, Not a Fund Manager"
-        lead="Skyward Invexa builds execution software for Australian investors. We do not pool client money, we do not run a strategy, and we do not tell you what to buy."
+        lead="Skyward Invexa builds AI trading software for Australian investors. We do not pool client money, we do not run a strategy of our own, and we do not tell you what to buy."
         aside={<HeroShowcase />}
       />
 
@@ -62,7 +74,7 @@ export default function About() {
                 What we build
               </p>
               <h2 className="text-2xl leading-tight font-semibold sm:text-3xl lg:text-4xl">
-                Execution Software, Not Investment Advice
+                AI Trading Software, Not Investment Advice
               </h2>
               <p className="mt-4 text-base leading-relaxed text-ink-400">
                 The platform gives you a way to reach markets and see what an order will cost. It
@@ -129,6 +141,138 @@ export default function About() {
               </li>
             ))}
           </ul>
+        </Container>
+      </Section>
+
+      {/* Mission. Placed after the structure sections so it reads as a summary
+          of the commitments above rather than a slogan at the top. */}
+      <Section tone="raised" divided>
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+            <SectionHeading title={aboutMission.heading} lead={aboutMission.body} />
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              {aboutProtections.map((item) => (
+                <li key={item.title} className="flex items-start gap-3">
+                  <Icon name="shield" className="mt-0.5 size-4 shrink-0 text-brand-600" />
+                  <span>
+                    <span className="block text-sm font-medium text-heading">{item.title}</span>
+                    <span className="mt-0.5 block text-sm leading-relaxed text-ink-300">
+                      {item.body}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </Section>
+
+      <Section divided>
+        <Container>
+          <SectionHeading
+            eyebrow="Scams"
+            title="Our Stand Against Investment Scams"
+            lead="Fake websites and callers sometimes copy a trusted brand name. Being clear about that is more useful than pretending it does not happen."
+          />
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            <Callout tone="warn" title="The Scale of It">
+              Australians reported $2.18 billion in scam losses in 2025, and investment scams were
+              the biggest single category at $837.7 million, according to the ACCC.
+            </Callout>
+            <Callout tone="info" title="How to Check It Is Us">
+              Only use skywardinvexa-au.com, only trust addresses ending in that domain, and if a
+              call feels wrong, end it and reach us through the details published on this site.
+              Report suspected scams to Scamwatch at scamwatch.gov.au.
+            </Callout>
+          </div>
+
+          <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-heading">Our Promise to You</h3>
+              <ul className="mt-5 space-y-3 border-l-2 border-brand-500 pl-6">
+                {aboutPromise.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-ink-300">
+                    <Icon name="check" className="mt-0.5 size-4 shrink-0 text-mint-600" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-display text-lg font-semibold text-heading">
+                Skyward Invexa at a Glance
+              </h3>
+              <div className="mt-5">
+                <Table caption="Skyward Invexa at a glance">
+                  <THead>
+                    <TH>Detail</TH>
+                    <TH>Information</TH>
+                  </THead>
+                  <TBody>
+                    {aboutFacts.map(([label, value]) => (
+                      <TR key={label}>
+                        <TD label="Detail" className="font-medium text-heading">
+                          {label}
+                        </TD>
+                        <TD label="Information">{value}</TD>
+                      </TR>
+                    ))}
+                  </TBody>
+                </Table>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      <Section tone="raised" divided>
+        <Container>
+          <SectionHeading
+            eyebrow="Get started"
+            title="Open Your Free Account Today"
+            lead="Registration is free and takes about two minutes. An account manager will help you with the next steps, and there is no charge to open or hold an account."
+          />
+          <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+            <div className="hairline elevate rounded-card bg-ink-850 p-6 sm:p-8">
+              <EnquiryForm />
+            </div>
+            <aside className="space-y-5">
+              <Callout tone="neutral" title="What happens after you submit">
+                An account manager calls you, usually during the next support window. They explain
+                the platform, check your goals and help you complete identity verification. Nothing
+                is traded until you have funded the account and set your own limits.
+              </Callout>
+            </aside>
+          </div>
+        </Container>
+      </Section>
+
+      {/* About-specific questions. Each page keeps its own set, and the schema
+          here is built from the questions this page actually renders. */}
+      <JsonLd
+        id="about-faq-schema"
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: aboutFaqs.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: { '@type': 'Answer', text: item.answer },
+          })),
+        }}
+      />
+
+      <Section divided>
+        <Container>
+          <SectionHeading
+            eyebrow="Questions"
+            title="About Skyward Invexa: FAQs"
+            lead="The questions this page raises most often."
+          />
+          <div className="mt-12">
+            <FaqSection items={aboutFaqs} idPrefix="about-faq" />
+          </div>
         </Container>
       </Section>
 

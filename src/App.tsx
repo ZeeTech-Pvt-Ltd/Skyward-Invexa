@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
+import { marketingPages } from '@/data/pages'
 import { RootLayout } from '@/components/layout/RootLayout'
+import { LandingPage } from '@/components/pages/LandingPage'
 import Home from '@/pages/Home'
 import About from '@/pages/About'
 import Faq from '@/pages/Faq'
@@ -26,6 +28,16 @@ export default function App() {
         <Route path="terms" element={<Terms />} />
         <Route path="risk-disclosure" element={<RiskDisclosure />} />
         <Route path="cookie-policy" element={<CookiePolicy />} />
+
+        {/* Marketing pages. One data file each, all rendered by one template. */}
+        {marketingPages.map((page) => (
+          <Route
+            key={page.path}
+            path={page.path.replace(/^\//, '')}
+            element={<LandingPage page={page} />}
+          />
+        ))}
+
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

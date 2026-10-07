@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { site } from '@/data/site'
 import { usePageMeta } from '@/lib/usePageMeta'
 import { Callout } from '@/components/ui/Callout'
@@ -85,6 +86,7 @@ export default function Privacy() {
                   'Market counterparties, custodians and settlement providers, to the extent required to execute and settle your instructions.',
                   'Banking and payment providers, to process transfers you initiate.',
                   'Professional advisers, auditors and insurers, where required.',
+                  'Google, as our analytics provider, which receives the pages you view, an approximate location derived from your IP address, and a random identifier stored in a first-party cookie. No advertising or remarketing data is shared.',
                   'Government agencies and regulators, where we are legally compelled to disclose.',
                 ]}
               />
@@ -98,9 +100,27 @@ export default function Privacy() {
             <ProseSection heading="5. Cookies and Analytics">
               <p>
                 This site uses cookies that are necessary for it to function, such as remembering
-                whether the navigation menu is open. If we add analytics or advertising cookies, we
-                will list them here and ask for your consent where consent is required before they
-                are set.
+                whether the navigation menu is open. These are set regardless of consent, because
+                the site does not work without them.
+              </p>
+              <p>
+                We also use Google Analytics 4 to understand which pages are visited and where
+                people stop reading. It records the pages you view, roughly how long you stay, the
+                site or search that referred you, and an approximate location derived from your IP
+                address, which is sent to Google as part of the request. It sets a first-party
+                cookie named <span className="font-mono text-xs">_ga</span> containing a randomly
+                generated identifier, so that two visits can be recognised as the same browser. We
+                do not send Google your name, email address or phone number, and we run no
+                advertising or remarketing pixels on this site.
+              </p>
+              <p>
+                You can block or delete these cookies in your browser at any time, and the site will
+                continue to work. Each cookie category, and which ones you can decline, is described
+                in the{' '}
+                <Link to="/cookie-policy" className="font-medium text-brand-700 hover:text-brand-500">
+                  Cookie Policy
+                </Link>
+                .
               </p>
             </ProseSection>
 

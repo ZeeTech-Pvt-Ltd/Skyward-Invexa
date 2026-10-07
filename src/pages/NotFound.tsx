@@ -5,6 +5,11 @@ import { Container } from '@/components/ui/Container'
 import { Section } from '@/components/ui/Section'
 import { Link } from 'react-router-dom'
 
+/** The menu groups flatten into one list of links, so a 404 offers every page. */
+const allLinks: { label: string; href: string }[] = primaryNav.flatMap((entry) =>
+  entry.href ? [{ label: entry.label, href: entry.href }] : (entry.items ?? []),
+)
+
 export default function NotFound() {
   usePageMeta({
     title: 'Page not found',
@@ -35,7 +40,7 @@ export default function NotFound() {
           </div>
 
           <ul className="mt-12 flex flex-wrap justify-center gap-x-6 gap-y-3 border-t border-ink-800 pt-8">
-            {primaryNav.map((item) => (
+            {allLinks.map((item) => (
               <li key={item.href}>
                 <Link
                   to={item.href}

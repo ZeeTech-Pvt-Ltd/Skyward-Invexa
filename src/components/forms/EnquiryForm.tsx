@@ -341,7 +341,7 @@ export function EnquiryForm({ className }: { className?: string }) {
           {errorText('lastName')}
         </div>
 
-        <div className="sm:col-span-2">
+        <div>
           <label htmlFor="email" className="mb-2 block text-sm font-medium text-ink-300">
             Email Address {required}
           </label>
@@ -363,7 +363,9 @@ export function EnquiryForm({ className }: { className?: string }) {
           {errorText('email')}
         </div>
 
-        <div className="sm:col-span-2">
+        {/* Email and phone sit side by side on sm and up, matching the name row
+            above. Below sm everything stacks. */}
+        <div>
           <label htmlFor="phone" className="mb-2 block text-sm font-medium text-ink-300">
             Phone Number {required}
           </label>
@@ -438,9 +440,16 @@ export function EnquiryForm({ className }: { className?: string }) {
         {errorText('agree')}
       </div>
 
+      {/* This line carries the risk wording that used to sit in a band above the
+          form. The form is rendered on three pages, so the disclosure travels
+          with it rather than living on the home page alone. */}
       <p className="text-center text-xs leading-relaxed text-ink-400">
-        By registering you confirm you are aged 18 or over. We never ask for credit card details or
-        passwords during sign-up.
+        By registering you confirm you are aged 18 or over. Trading carries risk, and you may lose
+        some or all of your deposit. Read the{' '}
+        <Link to="/risk-disclosure" className="font-medium text-brand-700 hover:text-brand-500">
+          Risk Disclosure Statement
+        </Link>
+        . We never ask for credit card details or passwords during sign-up.
       </p>
     </form>
   )
