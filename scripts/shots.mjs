@@ -15,7 +15,7 @@ import { mkdirSync, rmSync } from 'node:fs'
 const ROUTE = process.argv[2] ?? '/'
 const WIDTH = Number(process.argv[3] ?? 1440)
 const HEIGHT = Number(process.argv[4] ?? 900)
-const BASE = process.env.SHOT_BASE ?? 'http://localhost:5180'
+const BASE = process.env.SHOT_BASE ?? 'http://localhost:3000'
 
 const OUT = '.shots'
 rmSync(OUT, { recursive: true, force: true })

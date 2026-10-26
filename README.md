@@ -1,203 +1,157 @@
 # Skyward Invexa — skywardinvexa-au.com
 
-Marketing website for Skyward Invexa, a multi-asset trading platform for
-Australian investors. Built with React 19, TypeScript, Vite and Tailwind CSS v4.
+Marketing website for Skyward Invexa, an AI trading platform for Australian
+investors. Built with **Next.js 16 App Router** (static export), React 19,
+TypeScript and Tailwind CSS v4.
+
+Every route is rendered to HTML at build time. There is no server: `out/` is
+plain HTML, CSS and JS, and the only runtime request the page makes is the
+market ticker and Google Analytics.
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # http://localhost:3000
+npm run build      # static export to out/
+npm run serve      # serve out/ locally, with real 404s
 ```
 
 | Script | What it does |
 | --- | --- |
-| `npm run dev` | Vite dev server with hot reload |
-| `npm run build` | Typecheck, then build to `dist/` |
-| `npm run preview` | Serve the built output locally |
-| `npm run typecheck` | `tsc --noEmit` only |
-| `npm run smoke` | Render every route in Node and fail on any that throws |
-| `npm run test:ui` | Drive real DOM interactions in jsdom (accordion, form validation) |
+| `npm run dev` | Next dev server with hot reload |
+| `npm run build` | Typecheck and export every route to `out/` |
+| `npm run serve` | Serve `out/` as Vercel would, unknown paths get a real 404 |
+| `npm run check:ssg` | Assert every route emitted, with the right head and content, without a browser |
 | `npm run check:meta` | Load every route in Chrome and assert title, description, canonical, robots, social card and JSON-LD |
+| `npm run check:layout` | Measure panel-to-heading clearance at four viewport widths |
 | `npm run check:flags` | Request every flag in the country picker and assert none is missing |
+| `npm run check:csp` | Confirm every external origin the site contacts is allowed by the CSP |
 | `npm run audit` | Report source files nothing imports and public assets nothing references |
 | `npm run shots` | Screenshot a route into `.shots/` for visual review |
-| `npm run check:layout` | Measure the panel-to-heading clearance at four viewport widths |
 | `npm run sync:flags` | Copy the flag SVGs the country list needs into `public/flags/` |
 | `npm run make:og` | Render `public/og-image.png` at 1200×630 |
 
-`npm run smoke` is the quickest way to catch a page that compiles but crashes at
-runtime. It builds `scripts/smoke.tsx` for SSR, renders every route to a string,
-and asserts each one still contains the content it should — a page that renders
-an empty shell passes a render-only check but fails this one. When you add a
-route, add its expected markers to the `routes` array in that file.
+The browser-based checks need a server. `npm run serve` after a build, or
+`npm run dev`. Override the port with `SHOT_BASE`, because several Zeetech
+projects share this machine and a port serving another site returns 200 and
+looks fine:
 
-`npm run test:ui` covers what rendering cannot: that the FAQ accordion actually
-expands and collapses on click, that panels open independently, and that both
-forms refuse an empty submission. It mounts the real `App` in a jsdom window and
-dispatches real events. Two things to know if you extend it:
+```bash
+SHOT_BASE=http://localhost:4190 npm run check:meta
+```
 
-- Import `./dom` **first** in any script that needs a DOM. It installs the
-  jsdom globals before `react-dom` reads them at module scope.
-- Scope selectors to the component under test. `button[aria-expanded]` matches
-  the navbar's mobile-menu toggle as well as every accordion question, which
-  produces failures that look like component bugs but are not.
+Verify the server is this site before trusting a result:
+
+```bash
+curl -s http://localhost:4190/ | grep -o '<title>[^<]*'
+```
 
 ## Routes
 
 | Path | Page |
 | --- | --- |
-| `/` | Home (includes the `#open-account` sign-up form) |
+| `/` | Home, with the `#register` sign-up form |
 | `/about` | About Us |
-| `/faq` | FAQ |
-| `/contact` | Contact Us |
+| `/contact` | Contact Us, same form as home |
+| `/faq` | FAQ, 34 questions in seven groups |
 | `/sign-up` | Sign Up |
-| `/thank-you` | Thank You — every form lands here |
+| `/thank-you` | Thank You — every form lands here, `noindex` |
 | `/risk-disclosure` | Risk Disclosure |
 | `/privacy` | Privacy Policy |
 | `/terms` | Terms of Use |
 | `/cookie-policy` | Cookie Policy |
-| `*` | 404 |
+| `/ai-crypto-trading` … `/review` | Twelve marketing pages, one data file each |
+| `*` | 404, real status |
 
-Forms live in three places: the `#open-account` block on the home page, the
-contact page, and the sign-up page. All three are client-side only and compose
-an email via `mailto:` — see the deploy notes below.
-
-Every page `<h1>` must contain the phrase **"Skyward Invexa"**. That is a
-deliberate SEO constraint — keep it when you add or reword a heading.
+Every page `<h1>` on the marketing pages contains **"Skyward Invexa"**. That is
+a deliberate SEO constraint.
 
 ## Project structure
 
 ```
+app/
+  layout.tsx            root shell: fonts, metadata, header/footer, GA, site schema
+  globals.css           Tailwind import + design tokens (@theme)
+  page.tsx              home
+  <route>/page.tsx      one directory per route
+  not-found.tsx         becomes 404.html
+  sitemap.ts            generated from the data files
 src/
-├─ App.tsx                 Route table
-├─ main.tsx                Entry point, mounts BrowserRouter
-├─ index.css               Tailwind import + design tokens (@theme)
-│
-├─ data/                   All copy and configuration
-│  ├─ site.ts              Brand, domain, contact details, nav, risk warning
-│  └─ content.ts           Features, markets, fees, FAQ, milestones
-│
-├─ lib/
-│  ├─ cn.ts                className joiner
-│  └─ usePageMeta.ts       Per-route title / description / canonical
-│
-├─ components/
-│  ├─ layout/              Navbar, Footer, RootLayout, Logo, ScrollToTop
-│  ├─ sections/            Hero, FeatureGrid, MarketCards, CtaBand, ...
-│  └─ ui/                  Button, Card, Badge, Accordion, Table, Icon, ...
-│
-└─ pages/                  One file per route
+  components/           layout, sections, ui, charts, forms, seo, pages
+  data/                 site, content, about, faq, countries, pages/<slug>.ts
+  lib/                  metadata, phone, leadRelay, chartData
+  views/                page components behind each route
+public/                 flags, images, og image, robots.txt, gtag-init.js
 ```
 
 Two conventions keep this maintainable:
 
 - **Copy lives in `src/data/`, not in components.** Changing a fee, a market or
-  an FAQ answer means editing one file, never hunting through JSX.
-- **Pages are presentational.** They compose sections and call `usePageMeta`.
-  Anything reused on two pages is a component, not duplicated markup.
+  an FAQ answer means editing one file.
+- **Marketing pages are data.** `src/data/pages/<slug>.ts` is a
+  `MarketingPage`; `components/pages/LandingPage.tsx` renders it. Adding a page
+  means a data file, a one-line `app/<route>/page.tsx`, and a registry entry.
 
 ## Design tokens
 
-Defined once in the `@theme` block of `src/index.css`. Tailwind v4 generates the
-utilities from those variables, so `--color-brand-600` produces `bg-brand-600`,
-`text-brand-600`, `border-brand-600` and so on.
+Defined once in the `@theme` block of `app/globals.css`. Tailwind v4 generates
+the utilities from those variables, so `--color-brand-600` produces
+`bg-brand-600`, `text-brand-600`, `border-brand-600` and so on.
 
-The site is a **light theme**. The ink scale runs light-surface → dark-text:
-`ink-950` is the page background (white) and `ink-300` is body copy.
+The palette is the four colours from the brief:
 
-| Token | Utilities | Use |
+| Token | Value | Use |
 | --- | --- | --- |
-| `--color-ink-950` | `bg-ink-950` | Page background — white |
-| `--color-ink-900` | `bg-ink-900` | Raised section bands |
-| `--color-ink-850` | `bg-ink-850` | Card surfaces — white + shadow |
-| `--color-ink-800/700` | `border-ink-700` | Borders and dividers |
-| `--color-ink-500/400/300` | `text-ink-300` | Muted → body text |
-| `--color-heading` | `text-heading` | **Every** heading, without exception |
-| `--color-on-brand` | `text-on-brand` | Text on a brand-coloured fill |
-| `--color-brand-*` | `bg-brand-600` | Primary accent — sky blue |
-| `--color-mint-*` | `text-mint-600` | Positive / confirmation accent |
-| `--color-warn-*` | `text-warn-600` | Risk and warning callouts |
-| `--font-display` | `font-display` | Sora — headings |
-| `--font-sans` | `font-sans` | Inter — body |
-| `--radius-card` | `rounded-card` | 1rem, standard panel radius |
+| `--color-hero-bg` | `#081C2D` | Navy: hero band, footer, dark panels |
+| `--color-brand-500` | `#1F7A63` | Emerald: every interactive element |
+| `--color-ink-950` | `#F5F7FA` | Soft White: page background |
+| `--color-ink-500` | `#9AA3A8` | Cool Grey: dividers, decorative marks |
 
-Two utility classes carry the light treatment: `.elevate` (card shadow — light
-interfaces separate surfaces with elevation rather than the border contrast a
-dark theme relies on) and `.glow-brand` (the soft blue wash behind the hero and
-CTA bands).
+`--color-ink-400` (`#67707A`) is the one addition: the Cool Grey darkened for
+small text, because `#9AA3A8` reaches only 2.6:1 on Soft White and fails WCAG AA.
 
-Fonts load from Google Fonts in `index.html`. To self-host them, drop the
-`<link>` tags and serve the files from `public/fonts/`.
-
-## Images
-
-Photographs live in `public/images/` and are registered in `src/data/images.ts`
-with real alt text and intrinsic dimensions (so the browser reserves space and
-the layout does not shift). They were downloaded from Unsplash under the Unsplash
-License and are **self-hosted** — the site has no runtime dependency on a
-third-party CDN.
-
-Use the `Photo` component rather than a bare `<img>`, and `ImageFeature` for the
-image-beside-copy blocks used on the Home, Platform, Markets and About pages.
-
-To swap an image, replace the file and update the matching entry in
-`images.ts`. Keep the `width`/`height` accurate or you will reintroduce layout
-shift.
+The site is a **light theme**, except the navy hero band and footer. The ink
+scale runs light-surface to dark-text.
 
 ## Editorial rules
 
-**Headings are Title Case.** Anything rendered inside an `<h1>`–`<h4>`, a card
-title or an accordion question is capitalised as a title ("What the Risk Engine
-Will and Will Not Do"). Body copy, form labels and option text stay in sentence
-case. Small function words — *a, an, the, and, or, of, to, in, on, for, with, at,
-by, from* — stay lowercase unless they open or close the heading.
+**Headings are Title Case.** Body copy and form labels stay in sentence case.
 
-**Every heading uses the one `heading` colour.** Do not introduce gradient text
-or a per-section heading colour; the single-colour rule is deliberate.
+**Every heading uses one `heading` colour.** No gradient text, no per-section
+colour. Headings on navy use `text-hero-fg`, the one sanctioned exception.
 
-This site describes what the platform **does**, never what it **returns**. That
-distinction is deliberate and should survive future edits.
+**This site describes what the platform does, never what it returns.** No
+performance percentages, win rates, customer counts, ratings or testimonials.
+Where a detail is unconfirmed it is left out entirely rather than replaced with
+a bracketed token.
 
-**Do not add:** performance or accuracy percentages, review scores or review
-counts, invented customer testimonials, named staff without their consent, or
-any implied promise of a financial outcome.
+**Generated chart data is labelled** wherever a reader could take it for live
+market data. The ticker is real Binance data and says so; the sparklines are
+generated and say so.
 
-**Do add:** the current risk warning (`riskWarning` in `src/data/site.ts` — it is
-rendered in the footer and on every product page), and a visible label for any
-figure that is a sample rather than a published fact. Use the `IllustrativeNote`
-component for that.
+## Deployment
 
-Any new numeric claim should be traceable to a published source or an account
-agreement. If it is not, label it as illustrative.
+`out/` is the deployable artefact. Vercel serves it directly:
 
-## Before deploying
+- `/about` is served from `about.html`, so canonical URLs stay slash-free.
+- `404.html` gives unknown paths a real 404 status.
+- `vercel.json` carries the security headers and the CSP. It has **no
+  rewrites**: static export emits one file per route, and rewriting to
+  `index.html` would 404.
 
-The site is static — `dist/` is plain HTML, CSS and JS. Client-side routing needs
-a catch-all rewrite so a hard refresh on `/pricing` does not 404. Both are
-already configured:
+The CSP allows the lead relay, Binance market data and Google Analytics, and
+nothing else.
 
-- `public/_redirects` — Netlify, Cloudflare Pages
-- `vercel.json` — Vercel
+## Outstanding items
 
-For other hosts, add the equivalent: serve `index.html` with a 200 for every
-unmatched path.
-
-**Outstanding items — these are placeholders and must be replaced:**
-
-1. `site.abn`, `site.registeredOffice` and the email addresses in
-   `src/data/site.ts` are samples.
-2. `feeSchedule` in `src/data/content.ts` is an illustrative structure, not a
-   binding rate card.
-3. `/privacy` and `/terms` are working drafts. Both carry an on-page notice to
-   that effect. Have a qualified Australian financial services lawyer review
-   them against the Privacy Act 1988 (Cth) and your AFSL conditions, then remove
-   the notice.
-4. The contact form has no backend. It composes an email client-side via
-   `mailto:`. Replace the handler in `src/pages/Contact.tsx` with a real endpoint
-   when one exists — the field set (first name, last name, email, phone with dial
-   code, company, reason, message, consent) is already modelled in the
-   `FormState` type there.
-5. Add an OG image and reference it from `index.html` and `usePageMeta`.
-6. The FAQ answer on regulation is deliberately non-committal. Replace it with
-   your actual licence details before launch.
+1. `site.abn` and `site.registeredOffice` in `src/data/site.ts` are samples.
+   They are not rendered anywhere; supply real values or delete the fields.
+2. `/privacy` and `/terms` are working drafts. Have a qualified Australian
+   financial services lawyer review them against the Privacy Act 1988 (Cth) and
+   the AFSL conditions, then remove the on-page notice.
+3. Third-party statistics on the marketing pages (BIS, RBA, ACCC, ASIC, World
+   Gold Council, Independent Reserve, Investing.com) keep the source named
+   inline. They should be fact-checked before launch.
+4. The registration form posts to the shared lead relay with
+   `offerName: 'SkywardInvexa-Site'`. See `src/lib/leadRelay.ts`.

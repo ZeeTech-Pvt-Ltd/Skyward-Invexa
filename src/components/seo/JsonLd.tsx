@@ -1,31 +1,17 @@
-import { useEffect } from 'react'
-
 /**
- * Adds a JSON-LD block to the document head for the current route.
+ * Structured data for the current page.
  *
- * Written by hand into the head rather than rendered into the body, because
- * Google reads structured data from either place but other consumers are less
- * forgiving, and a <script> in the body is invalid inside many layouts.
+ * Rendered into the document rather than appended by a hook, so the JSON-LD is
+ * part of the prerendered HTML. The Vite build wrote it into document.head
+ * after hydration, which meant a crawler that did not run JavaScript never saw
+ * it. Google reads structured data from the body as well as the head.
  */
 export function JsonLd({ id, data }: { id: string; data: unknown }) {
-  const payload = JSON.stringify(data)
-
-  useEffect(() => {
-    let script = document.getElementById(id) as HTMLScriptElement | null
-
-    if (!script) {
-      script = document.createElement('script')
-      script.id = id
-      script.type = 'application/ld+json'
-      document.head.appendChild(script)
-    }
-
-    script.textContent = payload
-
-    return () => {
-      document.getElementById(id)?.remove()
-    }
-  }, [id, payload])
-
-  return null
+  return (
+    <script
+      id={id}
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
 }

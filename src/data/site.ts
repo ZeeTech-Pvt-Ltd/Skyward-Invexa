@@ -10,7 +10,7 @@ export const site = {
   url: 'https://skywardinvexa-au.com',
   tagline: 'Multi-asset market access, built for clarity.',
   description:
-    'Skyward Invexa is a multi-asset trading platform built for Australian investors, spanning crypto, ASX-listed equities, foreign exchange and commodities.',
+    'Skyward Invexa is an AI trading platform built for Australians. It scans crypto, forex, stocks, commodities and indices around the clock, and trades inside the limits you set.',
   market: 'Australia',
   locale: 'en-AU',
   timezone: 'AEST (UTC+10)',
@@ -165,15 +165,18 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
       { label: 'FAQ', href: '/faq' },
     ],
   },
-  {
-    heading: 'Legal',
-    items: [
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Use', href: '/terms' },
-      { label: 'Risk Disclosure', href: '/risk-disclosure' },
-      { label: 'Cookie Policy', href: '/cookie-policy' },
-    ],
-  },
+]
+
+/**
+ * The legal links sit in the footer's bottom bar rather than in a column of
+ * their own. They are the pages nobody browses to, and a fifth column made the
+ * nav wrap into a second row with a hole in it.
+ */
+export const legalNav: NavItem[] = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Use', href: '/terms' },
+  { label: 'Risk Disclosure', href: '/risk-disclosure' },
+  { label: 'Cookie Policy', href: '/cookie-policy' },
 ]
 
 /**

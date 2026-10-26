@@ -34,9 +34,19 @@ type Props = {
   className?: string
   seed?: number
   symbol?: string
+  /** The quoted figure in the toolbar. Keep it in scale with `start`. */
+  price?: string
+  /** Where the generated series begins, so a forex pair is not priced like Bitcoin. */
+  start?: number
 }
 
-export function TerminalDark({ className, seed = 21, symbol = 'BTC / AUD' }: Props) {
+export function TerminalDark({
+  className,
+  seed = 21,
+  symbol = 'BTC / AUD',
+  price = '84,283.99',
+  start = 84283,
+}: Props) {
   return (
     <figure
       className={cn(
@@ -83,7 +93,7 @@ export function TerminalDark({ className, seed = 21, symbol = 'BTC / AUD' }: Pro
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hero-border px-4 py-3">
             <div className="flex items-center gap-3">
               <span className="font-display text-sm font-semibold text-hero-fg">{symbol}</span>
-              <span className="font-mono text-sm text-hero-muted">84,283.99</span>
+              <span className="font-mono text-sm text-hero-muted">{price}</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-brand-500/15 px-2 py-0.5 font-mono text-[11px] font-medium text-brand-300">
                 <Icon name="chevronDown" className="size-3 rotate-180" />
                 0.12%
@@ -107,7 +117,7 @@ export function TerminalDark({ className, seed = 21, symbol = 'BTC / AUD' }: Pro
 
           {/* Chart */}
           <div className="px-3 pt-3">
-            <CandlestickChart seed={seed} surface="dark" count={46} start={84283} />
+            <CandlestickChart seed={seed} surface="dark" count={46} start={start} />
           </div>
 
           {/* Metric strip */}

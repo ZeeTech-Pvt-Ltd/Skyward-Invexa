@@ -1,5 +1,8 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { primaryNav, type NavEntry } from '@/data/site'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
@@ -22,12 +25,17 @@ function isGroup(entry: NavEntry): entry is { label: string; items: NonNullable<
   return Array.isArray(entry.items)
 }
 
+/** A route is active when it matches exactly, or sits beneath the href. */
+function isActive(pathname: string, href: string) {
+  return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`)
+}
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [openGroup, setOpenGroup] = useState<string | null>(null)
   const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null)
   const navRef = useRef<HTMLDivElement>(null)
-  const { pathname } = useLocation()
+  const pathname = usePathname()
 
   // Close everything whenever the route changes.
   useEffect(() => {
@@ -58,10 +66,10 @@ export function Navbar() {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [openGroup])
 
-  const desktopLinkClass = ({ isActive }: { isActive: boolean }) =>
+  const desktopLinkClass = (active: boolean) =>
     cn(
       'rounded-full px-3.5 py-2 text-sm transition-colors',
-      isActive ? 'bg-ink-800 font-medium text-heading' : 'text-ink-400 hover:bg-ink-800/60 hover:text-heading',
+      active ? 'bg-ink-800 font-medium text-heading' : 'text-ink-400 hover:bg-ink-800/60 hover:text-heading',
     )
 
   return (
@@ -77,15 +85,15 @@ export function Navbar() {
                   if (!isGroup(entry)) {
                     return (
                       <li key={entry.href}>
-                        <NavLink to={entry.href} end={entry.href === '/'} className={desktopLinkClass}>
+                        <Link href={entry.href} className={desktopLinkClass(isActive(pathname, entry.href))}>
                           {entry.label}
-                        </NavLink>
+                        </Link>
                       </li>
                     )
                   }
 
                   const open = openGroup === entry.label
-                  const active = entry.items.some((item) => item.href === pathname)
+                  const active = entry.items.some((item) => isActive(pathname, item.href))
 
                   return (
                     <li
@@ -132,14 +140,12 @@ export function Navbar() {
                           <ul className="elevate w-[22rem] overflow-hidden rounded-card border border-ink-700 bg-ink-850 p-2">
                             {entry.items.map((item) => (
                               <li key={item.href}>
-                                <NavLink
-                                  to={item.href}
-                                  className={({ isActive }) =>
-                                    cn(
-                                      'block rounded-xl px-3.5 py-2.5 transition-colors',
-                                      isActive ? 'bg-brand-100' : 'hover:bg-ink-800',
-                                    )
-                                  }
+                                <Link
+                                  href={item.href}
+                                  className={cn(
+                                    'block rounded-xl px-3.5 py-2.5 transition-colors',
+                                    isActive(pathname, item.href) ? 'bg-brand-100' : 'hover:bg-ink-800',
+                                  )}
                                 >
                                   <span className="block text-sm font-medium text-heading">
                                     {item.label}
@@ -147,7 +153,7 @@ export function Navbar() {
                                   <span className="mt-0.5 block text-xs leading-snug text-ink-400">
                                     {item.blurb}
                                   </span>
-                                </NavLink>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -188,20 +194,17 @@ export function Navbar() {
                   if (!isGroup(entry)) {
                     return (
                       <li key={entry.href}>
-                        <NavLink
-                          to={entry.href}
-                          end={entry.href === '/'}
-                          className={({ isActive }) =>
-                            cn(
-                              'block rounded-xl px-4 py-3 text-base transition-colors',
-                              isActive
-                                ? 'bg-ink-800 font-medium text-heading'
-                                : 'text-ink-400 hover:bg-ink-800/60 hover:text-heading',
-                            )
-                          }
+                        <Link
+                          href={entry.href}
+                          className={cn(
+                            'block rounded-xl px-4 py-3 text-base transition-colors',
+                            isActive(pathname, entry.href)
+                              ? 'bg-ink-800 font-medium text-heading'
+                              : 'text-ink-400 hover:bg-ink-800/60 hover:text-heading',
+                          )}
                         >
                           {entry.label}
-                        </NavLink>
+                        </Link>
                       </li>
                     )
                   }
@@ -230,19 +233,17 @@ export function Navbar() {
                         <ul className="mt-1 ml-3 space-y-1 border-l border-ink-700 pl-3">
                           {entry.items.map((item) => (
                             <li key={item.href}>
-                              <NavLink
-                                to={item.href}
-                                className={({ isActive }) =>
-                                  cn(
-                                    'block rounded-xl px-3 py-2.5 text-sm transition-colors',
-                                    isActive
-                                      ? 'bg-brand-100 font-medium text-heading'
-                                      : 'text-ink-400 hover:bg-ink-800/60 hover:text-heading',
-                                  )
-                                }
+                              <Link
+                                href={item.href}
+                                className={cn(
+                                  'block rounded-xl px-3 py-2.5 text-sm transition-colors',
+                                  isActive(pathname, item.href)
+                                    ? 'bg-brand-100 font-medium text-heading'
+                                    : 'text-ink-400 hover:bg-ink-800/60 hover:text-heading',
+                                )}
                               >
                                 {item.label}
-                              </NavLink>
+                              </Link>
                             </li>
                           ))}
                         </ul>

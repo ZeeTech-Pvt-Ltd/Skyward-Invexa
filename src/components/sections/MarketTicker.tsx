@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { Icon } from '@/components/ui/Icon'
 import { cn } from '@/lib/cn'

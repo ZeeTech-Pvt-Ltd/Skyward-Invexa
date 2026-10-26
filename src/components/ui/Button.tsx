@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { cn } from '@/lib/cn'
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'light' | 'outlineLight'
@@ -54,7 +54,7 @@ export function Button({
 
   if (to && !disabled) {
     return (
-      <Link to={to} className={classes} onClick={onClick}>
+      <Link href={to} className={classes} onClick={onClick}>
         {children}
       </Link>
     )

@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs'
 import { chromium } from 'playwright-core'
 
-const BASE = process.env.SHOT_BASE ?? 'http://localhost:5180'
+const BASE = process.env.SHOT_BASE ?? 'http://localhost:3000'
 
 /** path -> expected robots directive, or null when it should be indexable. */
 const ROUTES = [
@@ -38,7 +38,9 @@ const ROUTES = [
   ['/why-invest', null],
   ['/review', null],
   ['/thank-you', 'noindex, nofollow'],
-  ['/this-path-does-not-exist', 'noindex, nofollow'],
+  // Next's 404 route sets `noindex` itself, and adding ours as well emits a
+  // second robots tag. `noindex` alone is the correct directive for a 404.
+  ['/this-path-does-not-exist', 'noindex'],
 ]
 
 /**
@@ -46,7 +48,7 @@ const ROUTES = [
  * it has to satisfy the same limits as the rendered one.
  */
 function checkStaticHead() {
-  const html = readFileSync('dist/index.html', 'utf8')
+  const html = readFileSync('out/index.html', 'utf8')
   const title = (html.match(/<title>([^<]*)<\/title>/) ?? [])[1] ?? ''
   const description =
     (html.match(/<meta\s+name="description"\s+content="([^"]*)"/) ?? [])[1] ?? ''

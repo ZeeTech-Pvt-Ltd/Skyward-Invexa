@@ -29,13 +29,17 @@ export function candles(seed: number, count: number, start = 100): Candle[] {
   const random = lcg(seed)
   const out: Candle[] = []
   let price = start
+  // Keep the walk positive without distorting its scale. An absolute floor of
+  // 1 snapped a forex pair (start 0.66) to 1.00 on the first candle, which drew
+  // a spike and squashed the rest of the series against the axis.
+  const floor = start * 0.1
 
   for (let i = 0; i < count; i += 1) {
     const open = price
     const drift = 0.0006
     const shock = random() < 0.12 ? (random() - 0.5) * 0.05 : 0
     const change = (random() - 0.5) * 0.022 + drift + shock
-    const close = Math.max(1, open * (1 + change))
+    const close = Math.max(floor, open * (1 + change))
 
     const wick = Math.abs(change) * 0.9 + random() * 0.008
     const high = Math.max(open, close) * (1 + wick * random())

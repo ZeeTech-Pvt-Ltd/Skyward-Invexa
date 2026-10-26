@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { site } from '@/data/site'
 import { cn } from '@/lib/cn'
 
@@ -42,7 +42,7 @@ type LogoProps = {
 export function Logo({ className, inverted = false }: LogoProps) {
   return (
     <Link
-      to="/"
+      href="/"
       aria-label={`${site.name} home`}
       className={cn('group inline-flex items-center gap-2.5', className)}
     >

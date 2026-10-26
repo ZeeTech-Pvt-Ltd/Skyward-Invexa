@@ -1,3 +1,5 @@
+'use client'
+
 import { useId } from 'react'
 import { normalise, spark } from '@/lib/chartData'
 import { cn } from '@/lib/cn'

@@ -5,7 +5,7 @@
  */
 import { chromium } from 'playwright-core'
 
-const BASE = process.env.SHOT_BASE ?? 'http://localhost:5180'
+const BASE = process.env.SHOT_BASE ?? 'http://localhost:3000'
 const WIDTHS = [1280, 1440, 1600, 1920]
 
 const browser = await chromium.launch({ channel: 'chrome' })

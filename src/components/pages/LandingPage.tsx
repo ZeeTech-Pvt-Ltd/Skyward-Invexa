@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import type { Block, MarketingPage, VisualKey } from '@/data/pageTypes'
-import { usePageMeta } from '@/lib/usePageMeta'
 import { cn } from '@/lib/cn'
 import { Callout } from '@/components/ui/Callout'
 import { Card } from '@/components/ui/Card'
@@ -20,7 +19,14 @@ import { HeroShowcase } from '@/components/charts/HeroShowcase'
 import { SupportHoursPanel } from '@/components/charts/SupportHoursPanel'
 import { QuestionIndexPanel } from '@/components/charts/QuestionIndexPanel'
 import { TerminalDark } from '@/components/charts/TerminalDark'
-import { MarketMiniPanel, SparkPanel } from '@/components/charts/PageVisuals'
+import {
+  ForexSessionsPanel,
+  MarketMiniPanel,
+  ModesPanel,
+  PairPanel,
+  RiskStackPanel,
+  SparkPanel,
+} from '@/components/charts/PageVisuals'
 
 /* ------------------------------------------------------------------ */
 /* Hero visuals                                                        */
@@ -54,6 +60,13 @@ const VISUALS: Record<VisualKey, ReactNode> = {
     />
   ),
   markets: <MarketMiniPanel />,
+  forexSessions: <ForexSessionsPanel />,
+  forexPairs: <PairPanel />,
+  /* A forex-priced terminal. The default symbol is a Bitcoin pair, which reads
+     as the wrong market on a currency page. */
+  forexTerminal: <TerminalDark seed={44} symbol="AUD / USD" price="0.6584" start={0.6584} />,
+  riskStack: <RiskStackPanel />,
+  modes: <ModesPanel />,
 }
 
 /* ------------------------------------------------------------------ */
@@ -65,7 +78,7 @@ function BlockBody({ block }: { block: Block }) {
     case 'prose':
       return (
         <>
-          <SectionHeading title={block.heading} />
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} />
           <div className="mt-8 max-w-3xl space-y-5 text-base leading-relaxed text-ink-300">
             {block.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -80,7 +93,7 @@ function BlockBody({ block }: { block: Block }) {
       const colour = tone === 'cross' ? 'text-warn-600' : 'text-mint-600'
       return (
         <>
-          <SectionHeading title={block.heading} lead={block.intro} />
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
           <ul className="mt-8 grid max-w-4xl gap-4 sm:grid-cols-2">
             {block.items.map((item) => (
               <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-ink-300">
@@ -97,38 +110,62 @@ function BlockBody({ block }: { block: Block }) {
       )
     }
 
-    case 'steps':
+    case 'steps': {
+      /**
+       * A connected process rail rather than a card grid. Five steps in a
+       * three-column grid leaves the second row half empty, and the page
+       * already runs card grids either side of this, so a rail keeps the
+       * sequence readable and the rhythm varied.
+       *
+       * The connector is decorative, so it is hidden from assistive tech and
+       * disappears when the steps stack below `lg`.
+       */
+      const count = block.items.length
+      const railClass =
+        count === 4 ? 'lg:grid-cols-4' : count === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-5'
+
       return (
         <>
-          <SectionHeading title={block.heading} lead={block.intro} />
-          <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
+          <ol className={cn('relative mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2', railClass)}>
+            <span
+              aria-hidden="true"
+              className="absolute top-4.5 right-0 left-0 hidden h-px bg-ink-700 lg:block"
+            />
             {block.items.map((item, index) => (
-              <li key={item.title}>
-                <Card className="h-full">
-                  <span className="font-mono text-xs font-semibold text-brand-600">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <h3 className="mt-3 font-display text-base font-semibold text-heading">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-300">{item.body}</p>
-                </Card>
+              <li key={item.title} className="relative">
+                <span className="relative z-10 flex size-9 items-center justify-center rounded-full border border-brand-500/30 bg-brand-100 font-mono text-xs font-semibold text-brand-700">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                {/* Two lines reserved: a rail this narrow wraps most titles,
+                    and without it the copy below starts at a different height
+                    in every column. */}
+                <h3 className="mt-5 min-h-[2.75rem] font-display text-base leading-snug font-semibold text-heading">
+                  {item.title}
+                </h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-ink-300">{item.body}</p>
               </li>
             ))}
           </ol>
         </>
       )
+    }
 
-    case 'cards':
+    case 'cards': {
+      // Four cards in a three-column grid leaves the fourth alone on a row with
+      // two empty cells, so the count follows the content unless it is set.
+      const count =
+        block.columns ?? (block.items.length === 2 ? 2 : block.items.length % 4 === 0 ? 4 : 3)
+      const gridClass = {
+        2: 'sm:grid-cols-2',
+        3: 'sm:grid-cols-2 lg:grid-cols-3',
+        4: 'sm:grid-cols-2 lg:grid-cols-4',
+      }[count]
+
       return (
         <>
-          <SectionHeading title={block.heading} lead={block.intro} />
-          <ul
-            className={cn(
-              'mt-10 grid gap-5',
-              (block.columns ?? 3) === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3',
-            )}
-          >
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
+          <ul className={cn('mt-10 grid gap-5', gridClass)}>
             {block.items.map((item) => (
               <li key={item.title}>
                 <Card className="h-full">
@@ -145,11 +182,12 @@ function BlockBody({ block }: { block: Block }) {
           </ul>
         </>
       )
+    }
 
     case 'table':
       return (
         <>
-          <SectionHeading title={block.heading} lead={block.intro} />
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
           {/* A data panel, not decoration: every row is the site's own content. */}
           <div className="mt-8">
             <Table caption={block.heading}>
@@ -182,20 +220,28 @@ function BlockBody({ block }: { block: Block }) {
       )
 
     case 'split': {
+      // Pros against cons unless the page says otherwise.
       const sides = [
-        { ...block.left, tone: 'mint' as const },
-        { ...block.right, tone: 'warn' as const },
+        { ...block.left, tone: block.left.tone ?? 'positive' },
+        { ...block.right, tone: block.right.tone ?? 'negative' },
       ]
+      const glyph = { positive: 'check', negative: 'close', neutral: 'check' } as const
+      const colour = {
+        positive: 'text-mint-600',
+        negative: 'text-warn-600',
+        neutral: 'text-ink-400',
+      } as const
+
       return (
         <>
-          <SectionHeading title={block.heading} lead={block.intro} />
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
             {sides.map((side) => (
               <div key={side.title} className="hairline rounded-card bg-ink-850 p-6">
                 <h3
                   className={cn(
                     'font-display text-base font-semibold',
-                    side.tone === 'mint' ? 'text-brand-700' : 'text-warn-600',
+                    side.tone === 'negative' ? 'text-warn-600' : 'text-brand-700',
                   )}
                 >
                   {side.title}
@@ -203,13 +249,17 @@ function BlockBody({ block }: { block: Block }) {
                 <ul className="mt-4 space-y-3">
                   {side.items.map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-ink-300">
-                      <Icon
-                        name={side.tone === 'mint' ? 'check' : 'close'}
-                        className={cn(
-                          'mt-0.5 size-4 shrink-0',
-                          side.tone === 'mint' ? 'text-mint-600' : 'text-warn-600',
-                        )}
-                      />
+                      {side.tone === 'neutral' ? (
+                        <span
+                          aria-hidden="true"
+                          className="mt-2 size-1.5 shrink-0 rounded-full bg-ink-500"
+                        />
+                      ) : (
+                        <Icon
+                          name={glyph[side.tone]}
+                          className={cn('mt-0.5 size-4 shrink-0', colour[side.tone])}
+                        />
+                      )}
                       <span>{item}</span>
                     </li>
                   ))}
@@ -228,10 +278,72 @@ function BlockBody({ block }: { block: Block }) {
         </Callout>
       )
 
+    case 'stats':
+      return (
+        <>
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
+          <dl className="mt-10 grid gap-px overflow-hidden rounded-card border border-ink-700 bg-ink-700 sm:grid-cols-3">
+            {block.items.map((item) => (
+              <div key={item.label} className="bg-ink-850 p-6">
+                <dd className="font-display text-3xl leading-none font-semibold text-brand-700 sm:text-4xl">
+                  {item.value}
+                </dd>
+                <dt className="mt-3 text-sm leading-relaxed text-ink-300">{item.label}</dt>
+                {item.source ? (
+                  <p className="mt-2 text-xs text-ink-400">{item.source}</p>
+                ) : null}
+              </div>
+            ))}
+          </dl>
+        </>
+      )
+
+    case 'media': {
+      const visual = VISUALS[block.visual]
+      const text = (
+        <div className="min-w-0">
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
+          {block.body ? (
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-ink-300">
+              {block.body.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          ) : null}
+          {block.points?.length ? (
+            <ul className="mt-7 space-y-4">
+              {block.points.map((point) => (
+                <li key={point} className="flex items-start gap-3 text-sm leading-relaxed text-ink-300">
+                  <Icon name="check" className="mt-0.5 size-4 shrink-0 text-mint-600" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      )
+
+      return (
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {block.side === 'left' ? (
+            <>
+              <div className="min-w-0">{visual}</div>
+              {text}
+            </>
+          ) : (
+            <>
+              {text}
+              <div className="min-w-0">{visual}</div>
+            </>
+          )}
+        </div>
+      )
+    }
+
     case 'glossary':
       return (
         <>
-          <SectionHeading title={block.heading} />
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} />
           <dl className="mt-8 grid gap-x-10 gap-y-5 border-t border-ink-700 pt-8 sm:grid-cols-2">
             {block.items.map((item) => (
               <div key={item.term}>
@@ -246,7 +358,7 @@ function BlockBody({ block }: { block: Block }) {
     case 'checklist':
       return (
         <>
-          <SectionHeading title={block.heading} lead={block.intro} />
+          <SectionHeading eyebrow={block.eyebrow} title={block.heading} lead={block.intro} />
           <ul className="mt-8 grid max-w-3xl gap-3 border-l-2 border-brand-500 pl-6">
             {block.items.map((item) => (
               <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-ink-300">
@@ -290,12 +402,6 @@ function BlockBody({ block }: { block: Block }) {
  * of them.
  */
 export function LandingPage({ page }: { page: MarketingPage }) {
-  usePageMeta({
-    title: page.meta.title,
-    description: page.meta.description,
-    path: page.path,
-  })
-
   const showForm = page.showForm ?? true
 
   return (
@@ -328,10 +434,15 @@ export function LandingPage({ page }: { page: MarketingPage }) {
           ))}
         </ul>
 
-        <div className="mt-9">
+        <div className="mt-9 flex flex-wrap items-center gap-3">
           <Button href="#register" variant="light" size="lg">
             {page.hero.cta ?? 'Create My Free Account'}
           </Button>
+          {page.hero.secondaryCta ? (
+            <Button to={page.hero.secondaryCta.href} variant="outlineLight" size="lg">
+              {page.hero.secondaryCta.label}
+            </Button>
+          ) : null}
         </div>
       </DarkPageHero>
 

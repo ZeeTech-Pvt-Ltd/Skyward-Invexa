@@ -10,7 +10,7 @@
  */
 import { chromium } from 'playwright-core'
 
-const BASE = process.env.SHOT_BASE ?? 'http://localhost:5180'
+const BASE = process.env.SHOT_BASE ?? 'http://localhost:3000'
 
 const browser = await chromium.launch({ channel: 'chrome' })
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })

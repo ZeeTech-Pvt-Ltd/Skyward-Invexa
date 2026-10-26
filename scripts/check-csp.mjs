@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs'
 import { chromium } from 'playwright-core'
 
-const BASE = process.env.SHOT_BASE ?? 'http://localhost:5180'
+const BASE = process.env.SHOT_BASE ?? 'http://localhost:3000'
 const ROUTES = ['/', '/about', '/contact', '/faq', '/sign-up', '/privacy']
 
 const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'))

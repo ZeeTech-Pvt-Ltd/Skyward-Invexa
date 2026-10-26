@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { COUNTRIES } from '@/data/countries'
 import { Flag } from './Flag'

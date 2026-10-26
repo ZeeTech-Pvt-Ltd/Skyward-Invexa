@@ -1,5 +1,8 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { dialCodeOf, isKnownCountry, PHONE_EXAMPLE, PHONE_EXAMPLE_FALLBACK, TZ_COUNTRY } from '@/data/countries'
 import { parsePhoneInput, validateEmail, validateName, validatePhone } from '@/lib/phone'
 import {
@@ -68,7 +71,7 @@ export function EnquiryForm({ className }: { className?: string }) {
   const mountedRef = useRef(true)
   const submittingRef = useRef(false)
 
-  const navigate = useNavigate()
+  const router = useRouter()
 
   // Timezone-based country default. Skipped once the visitor starts typing.
   useEffect(() => {
@@ -191,7 +194,7 @@ export function EnquiryForm({ className }: { className?: string }) {
     // The honeypot must actually be checked. A filled box means a bot, so the
     // form reports success without sending anything anywhere.
     if (company.trim()) {
-      navigate('/thank-you')
+      router.push('/thank-you')
       return
     }
 
@@ -220,7 +223,7 @@ export function EnquiryForm({ className }: { className?: string }) {
       if (!mountedRef.current) return
 
       if (outcome.kind === 'success') {
-        navigate('/thank-you')
+        router.push('/thank-you')
         return
       }
 
@@ -427,11 +430,11 @@ export function EnquiryForm({ className }: { className?: string }) {
           />
           <span>
             I agree to the{' '}
-            <Link to="/privacy" className="font-medium text-brand-700 hover:text-brand-500">
+            <Link href="/privacy" className="font-medium text-brand-700 hover:text-brand-500">
               Privacy Policy
             </Link>{' '}
             and{' '}
-            <Link to="/terms" className="font-medium text-brand-700 hover:text-brand-500">
+            <Link href="/terms" className="font-medium text-brand-700 hover:text-brand-500">
               Terms &amp; Conditions
             </Link>
             .
@@ -446,7 +449,7 @@ export function EnquiryForm({ className }: { className?: string }) {
       <p className="text-center text-xs leading-relaxed text-ink-400">
         By registering you confirm you are aged 18 or over. Trading carries risk, and you may lose
         some or all of your deposit. Read the{' '}
-        <Link to="/risk-disclosure" className="font-medium text-brand-700 hover:text-brand-500">
+        <Link href="/risk-disclosure" className="font-medium text-brand-700 hover:text-brand-500">
           Risk Disclosure Statement
         </Link>
         . We never ask for credit card details or passwords during sign-up.
